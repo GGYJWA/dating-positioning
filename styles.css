@@ -175,3 +175,19 @@ body {
   font-size: 14px; opacity: 0; pointer-events: none; transition: .25s; z-index: 50; max-width: 80%; text-align: center;
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ---------- 分享图弹层 ---------- */
+.share-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.65);
+  display: none; align-items: center; justify-content: center;
+  z-index: 100; padding: 20px;
+}
+.share-modal {
+  background: #fff; border-radius: 18px; padding: 16px;
+  max-width: 420px; width: 100%; max-height: 90vh; overflow: auto;
+  box-shadow: 0 12px 40px rgba(0,0,0,.3);
+}
+.share-img { width: 100%; border-radius: 12px; display: block; }
+.share-tip { text-align: center; font-size: 13px; color: #8a8a8a; margin: 12px 0 10px; }
+.share-btns { display: flex; gap: 12px; }
+.share-btns .ghost-btn { flex: 1; }
