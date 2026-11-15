@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>相亲市场定位测试 · 嘀嗒老师版</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="app">
+  <!-- 所有屏幕由 JS 渲染 -->
+</div>
+
+<script src="engine.js"></script>
+<script>
+(function () {
+  const E = window.DatingEngine;
+  const app = document.getElementById('app');
+
+  /* ---------- 状态 ---------- */
+  const state = {
+    gender: null,          // 'female' | 'male'
+    step: 0,               // 0=开场, 1..9=答题, 10=加载, 11=结果
+    answers: {},           // 各题答案
+  };
+
+  /* ---------- 工具 ---------- */
+  const el = (html) => { const d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstElementChild; };
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  /* ---------- 开场屏 ---------- */
+  function renderIntro() {
+    const node = el(`
+      <section class="screen intro">
+        <div class="hero">
+          <div class="hero-badge">💝 嘀嗒老师 · 本地计算版</div>
+          <h1 class="hero-title">相亲市场<br/>定位测试</h1>
+          <p class="hero-sub">基于 9 个维度，帮你找到真实的相亲市场坐标</p>
+        </div>
+
+        <div class="tags">
+          <span class="tag">📊 9 大维度</span>
+          <span class="tag">🎯 双画像匹配</span>
+          <span class="tag">💬 详细解析</span>
+        </div>
+
+        <div class="card privacy">
+          <span class="lock">🔒</span>
+          <p>你填写的所有信息<b>仅在本地计算使用</b>，不上传任何服务器，不存储任何个人数据，请放心作答。</p>
+        </div>
+
+        <div class="card notice">
+          <p>测试共 <b>9 个维度</b>，约需 <b>5 分钟</b>。结果将给出你的相亲市场定位，以及专属的<b>「底线型」&amp;「理想型」双画像</b>。</p>
+        </div>
+
+        <div class="gender-pick">
+          <p class="q-label">你的性别</p>
+          <div class="gender-row">
+            <button class="gender-btn" data-g="female">👩 女生</button>
+            <button class="gender-btn" data-g="male">👨 男生</button>
+          </div>
+        </div>
+
+        <button class="primary-btn" id="startBtn" disabled>开始测试 →</button>
+        <p class="foot-note">本测试为趣味自我认知工具，结果仅供娱乐与参考。</p>
+      </section>
+    `);
+    node.querySelectorAll('.gender-btn').forEach(b => {
+      b.addEventListener('click', () => {
+        state.gender = b.dataset.g;
+        node.querySelectorAll('.gender-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        node.querySelector('#startBtn').disabled = false;
+      });
+    });
+    node.querySelector('#startBtn').addEventListener('click', () => { state.step = 1; render(); });
+    return node;
+  }
+
+  /* ---------- 答题屏 ---------- */
+  function renderQuiz() {
+    const idx = state.step - 1;
+    const step = E.QUESTIONS[idx];
+    const pct = Math.round((state.step / 9) * 100);
+
+    const qHtml = step.questions.map(q => {
+      if (q.type === 'number') {
+        const saved = state.answers[q.id];
+        return `
+          <div class="question" data-q="${q.id}" data-type="number">
+            <p class="q-label">${esc(q.label)}</p>
+            ${q.hint ? `<p class="q-hint">${esc(q.hint)}</p>` : ''}
+            <input class="num-input" type="number" inputmode="numeric" placeholder="${esc(q.placeholder||'')}" value="${saved?esc(saved.value):''}" />
+            <span class="unit">${esc(q.unit||'')}</span>
+          </div>`;
+      }
+      if (q.type === 'multi') {
+        const saved = state.answers[q.id] || [];
+        const opts = q.options.map(o => {
+          const on = saved.some(s => s.value === o.value);
+          return `<button class="opt multi ${on?'active':''}" data-v="${esc(o.value)}" data-label="${esc(o.label)}">${esc(o.label)}</button>`;
+        }).join('');
+        return `
+          <div class="question" data-q="${q.id}" data-type="multi">
+            <p class="q-label">${esc(q.label)}</p>
+            <div class="opts multi-wrap">${opts}</div>
+          </div>`;
+      }
+      const saved = state.answers[q.id];
+      const opts = q.options.map(o => {
+        const on = saved && saved.value === o.value;
+        return `<button class="opt ${on?'active':''}" data-v="${esc(o.value)}" data-label="${esc(o.label)}" data-score="${o.s}" data-tier="${o.tier!=null?o.tier:''}" data-idx="${q.options.indexOf(o)}">${esc(o.label)}</button>`;
+      }).join('');
+      return `
+        <div class="question" data-q="${q.id}" data-type="single">
+          <p class="q-label">${esc(q.label)}</p>
+          <div class="opts">${opts}</div>
+        </div>`;
+    }).join('');
+
+    const isLast = state.step === 9;
+    const node = el(`
+      <section class="screen quiz">
+        <div class="progress-wrap">
+          <div class="progress-top">
+            <span class="module">${esc(step.title)}</span>
+            <span class="counter">${state.step} / 9</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <p class="subtitle">## ${esc(step.subtitle)}</p>
+        </div>
+        <div class="quiz-body">${qHtml}</div>
+        <div class="nav-row">
+          <button class="ghost-btn" id="backBtn">${state.step===1?'← 返回':'← 返回'}</button>
+          <button class="primary-btn flex1" id="nextBtn">${isLast?'查看我的相亲定位 ✨':'下一步 →'}</button>
+        </div>
+      </section>
+    `);
+
+    // 单选
+    node.querySelectorAll('.question[data-type="single"] .opt').forEach(b => {
+      b.addEventListener('click', () => {
+        const q = b.closest('.question');
+        q.querySelectorAll('.opt').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+        state.answers[b.closest('.question').dataset.q] = {
+          value: b.dataset.v, label: b.dataset.label,
+          score: Number(b.dataset.score),
+          tier: b.dataset.tier === '' ? undefined : Number(b.dataset.tier),
+          idx: Number(b.dataset.idx),
+        };
+      });
+    });
+    // 多选
+    node.querySelectorAll('.question[data-type="multi"] .opt').forEach(b => {
+      b.addEventListener('click', () => {
+        const qid = b.closest('.question').dataset.q;
+        const arr = state.answers[qid] || [];
+        if (b.classList.contains('active')) {
+          b.classList.remove('active');
+          state.answers[qid] = arr.filter(s => s.value !== b.dataset.v);
+        } else {
+          b.classList.add('active');
+          arr.push({ value: b.dataset.v, label: b.dataset.label });
+          state.answers[qid] = arr;
+        }
+      });
+    });
+    // 数值
+    node.querySelectorAll('.question[data-type="number"] input').forEach(inp => {
+      inp.addEventListener('input', () => {
+        const q = inp.closest('.question');
+        const qid = q.dataset.q;
+        const v = inp.value.trim();
+        const conf = E.QUESTIONS.flatMap(s => s.questions).find(x => x.id === qid);
+        const score = conf.id === 'age' ? E.ageScore(v) : E.heightScore(state.gender, v);
+        state.answers[qid] = { value: v, score };
+      });
+    });
+
+    node.querySelector('#backBtn').addEventListener('click', () => {
+      if (state.step === 1) { state.step = 0; } else { state.step--; }
+      render();
+    });
+    node.querySelector('#nextBtn').addEventListener('click', () => {
+      if (!validateStep(step)) {
+        toast('还有题目没填完哦～');
+        return;
+      }
+      if (isLast) { state.step = 10; render(); runCompute(); }
+      else { state.step++; render(); window.scrollTo(0,0); }
+    });
+
+    return node;
+  }
+
+  function validateStep(step) {
+    for (const q of step.questions) {
+      const a = state.answers[q.id];
+      if (q.type === 'multi') { if (!a || a.length === 0) return false; }
+      else if (q.type === 'number') { if (!a || a.value === '' || a.value == null) return false; }
+      else { if (!a) return false; }
+    }
+    return true;
+  }
+
+  /* ---------- 加载屏 ---------- */
+  function renderLoading() {
+    return el(`
+      <section class="screen loading">
+        <div class="crystal">🔮</div>
+        <h2>正在分析你的数据</h2>
+        <p class="loading-sub">综合 9 个维度，生成专属双画像…</p>
+        <div class="dots"><span></span><span></span><span></span></div>
+      </section>
+    `);
+  }
+
+  function runCompute() {
+    setTimeout(() => {
+      const scores = E.computeScores(state.answers);
+      const portrait = E.generatePortrait(state.answers, scores);
+      state.result = { scores, portrait };
+      state.step = 11;
+      render();
+      window.scrollTo(0, 0);
+    }, 1600);
+  }
+
+  /* ---------- 结果屏 ---------- */
+  function renderResult() {
+    const { scores, portrait } = state.result;
+    const t = portrait.tier;
+    const dims = scores.dims;
+
+    function bar(name, val) {
+      return `<div class="dim-row"><span class="dim-name">${name}</span>
+        <div class="dim-bar"><div class="dim-fill" style="width:${val}%"></div></div>
+        <span class="dim-val">${val}</span></div>`;
+    }
+
+    const tipsHtml = portrait.tips.map(x => `<li>${esc(x)}</li>`).join('');
+
+    const node = el(`
+      <section class="screen result">
+        <div class="share-card">
+          <div class="sc-head">
+            <span class="sc-badge">💝 相亲市场定位</span>
+            <span class="sc-gender">${esc(portrait.genderText)}</span>
+          </div>
+          <div class="sc-tier">${t.emoji} ${esc(t.name)}</div>
+          <div class="sc-tagline">${esc(t.tagline)}</div>
+          <div class="sc-score">综合竞争力 <b>${scores.total}</b><span>/100</span></div>
+          <div class="sc-bars">
+            ${bar('硬实力', dims.hard)}
+            ${bar('软实力', dims.soft)}
+            ${bar('家庭支持', dims.family)}
+            ${bar('主动性', dims.active)}
+          </div>
+        </div>
+
+        <div class="card portrait-block">
+          <h3>🛡️ 底线型 · 你的安全区</h3>
+          <p class="pb-desc">这是你能长期舒服相处的最低线，再低就会内耗。</p>
+          <ul class="pb-list">
+            <li>城市：<b>${esc(portrait.floor.city)}</b> 及以上</li>
+            <li>学历：<b>${esc(portrait.floor.edu)}</b> 及以上</li>
+            <li>月收入：<b>${esc(portrait.floor.income)}</b> 及以上</li>
+            <li>颜值：<b>${esc(portrait.floor.look)}</b> 及以上</li>
+          </ul>
+        </div>
+
+        <div class="card portrait-block ideal">
+          <h3>🌟 理想型 · 你的天花板</h3>
+          <p class="pb-desc">踮脚能够到的区间，不是白日梦，是「努力一下够得着」。</p>
+          <ul class="pb-list">
+            <li>城市：<b>${esc(portrait.ideal.city)}</b></li>
+            <li>学历：<b>${esc(portrait.ideal.edu)}</b></li>
+            <li>月收入：<b>${esc(portrait.ideal.income)}</b></li>
+            <li>颜值：<b>${esc(portrait.ideal.look)}</b></li>
+          </ul>
+        </div>
+
+        <div class="card analysis">
+          <h3>🔍 详细解析</h3>
+          <p>${esc(portrait.analysis)}</p>
+          <ul class="tips">${tipsHtml}</ul>
+        </div>
+
+        <div class="result-actions">
+          <button class="primary-btn" id="retryBtn">↻ 重新测试</button>
+          <button class="ghost-btn" id="shotBtn">📸 截图保存分享</button>
+        </div>
+        <p class="foot-note">结果由本地算法生成，仅供参考与娱乐。你的数据从未离开这台设备。</p>
+      </section>
+    `);
+
+    node.querySelector('#retryBtn').addEventListener('click', () => {
+      state.step = 0; state.answers = {}; state.result = null; render(); window.scrollTo(0,0);
+    });
+    node.querySelector('#shotBtn').addEventListener('click', () => {
+      toast('长按上方卡片或截屏即可保存分享～');
+    });
+    return node;
+  }
+
+  /* ---------- 提示 ---------- */
+  let toastTimer;
+  function toast(msg) {
+    let t = document.getElementById('toast');
+    if (!t) { t = el('<div id="toast" class="toast"></div>'); document.body.appendChild(t); }
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  /* ---------- 渲染入口 ---------- */
+  function render() {
+    app.innerHTML = '';
+    let node;
+    if (state.step === 0) node = renderIntro();
+    else if (state.step >= 1 && state.step <= 9) node = renderQuiz();
+    else if (state.step === 10) node = renderLoading();
+    else if (state.step === 11) node = renderResult();
+    app.appendChild(node);
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
