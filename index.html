@@ -12,6 +12,7 @@
 </div>
 
 <script src="engine.js"></script>
+<script src="qrcode.js"></script>
 <script>
 (function () {
   const E = window.DatingEngine;
@@ -218,6 +219,7 @@
 
   function runCompute() {
     setTimeout(() => {
+      state.answers.gender = state.gender; // 把性别传入引擎，否则结果页始终显示「女生」
       const scores = E.computeScores(state.answers);
       const portrait = E.generatePortrait(state.answers, scores);
       state.result = { scores, portrait };
@@ -298,10 +300,213 @@
     node.querySelector('#retryBtn').addEventListener('click', () => {
       state.step = 0; state.answers = {}; state.result = null; render(); window.scrollTo(0,0);
     });
-    node.querySelector('#shotBtn').addEventListener('click', () => {
-      toast('长按上方卡片或截屏即可保存分享～');
-    });
+    node.querySelector('#shotBtn').addEventListener('click', generateShareImage);
     return node;
+  }
+
+  /* ---------- 分享图（原生 Canvas 绘制 + 二维码，纯本地）---------- */
+  const SHARE_URL = 'https://GGYJWA.github.io/dating-positioning/';
+
+  function roundRect(ctx, x, y, w, h, r) {
+    if (w < 2 * r) r = w / 2;
+    if (h < 2 * r) r = h / 2;
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function buildShareDataURL() {
+    const { scores, portrait } = state.result;
+    const t = portrait.tier;
+    const dims = scores.dims;
+    const W = 1080, P = 64, cardW = W - 2 * P;
+    const F = '-apple-system,"PingFang SC","Microsoft YaHei",sans-serif';
+
+    const tmp = document.createElement('canvas');
+    tmp.width = W; tmp.height = 2600;
+    const ctx = tmp.getContext('2d');
+
+    // 背景
+    const bg = ctx.createLinearGradient(0, 0, 0, tmp.height);
+    bg.addColorStop(0, '#ffe9ee'); bg.addColorStop(0.4, '#fff5f7'); bg.addColorStop(1, '#ffffff');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, tmp.height);
+
+    let y = 70;
+    // 头部
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillStyle = '#ff2442'; ctx.font = '700 32px ' + F;
+    ctx.fillText('💝 嘀嗒老师 · 相亲市场定位', P, y);
+    y += 50;
+    ctx.fillStyle = '#2b2b2b'; ctx.font = '800 58px ' + F;
+    ctx.fillText('你的相亲市场定位结果', P, y);
+    y += 96;
+
+    // 主卡（高度按 CJK 字宽≈字号解析估算）
+    const pad = 44;
+    const innerMax = cardW - 2 * pad;
+    const perLine = Math.max(1, Math.floor((innerMax - 96) / 30));
+    const tagLines = Math.max(1, Math.ceil(t.tagline.length / perLine));
+    const tagH = tagLines * 42 + 14;
+    const cardH = 96 + tagH + 150 + 4 * 56 + 2 * pad;
+    const cardX = P, cardY = y;
+
+    ctx.fillStyle = '#ffffff'; roundRect(ctx, cardX, cardY, cardW, cardH, 28); ctx.fill();
+    ctx.strokeStyle = '#ffe0e6'; ctx.lineWidth = 2; roundRect(ctx, cardX, cardY, cardW, cardH, 28); ctx.stroke();
+
+    let iy = cardY + pad;
+    // emoji + 名称
+    ctx.textBaseline = 'top'; ctx.textAlign = 'left';
+    ctx.font = '72px ' + F; ctx.fillText(t.emoji, cardX + pad, iy);
+    ctx.fillStyle = '#2b2b2b'; ctx.font = '800 56px ' + F;
+    ctx.fillText(t.name, cardX + pad + 96, iy + 8);
+    iy += 96;
+    // 标语
+    ctx.fillStyle = '#555'; ctx.font = '30px ' + F;
+    for (let k = 0; k < tagLines; k++) {
+      ctx.fillText(t.tagline.slice(k * perLine, (k + 1) * perLine), cardX + pad, iy);
+      iy += 42;
+    }
+    iy += 14;
+    // 综合分
+    ctx.textBaseline = 'alphabetic';
+    ctx.fillStyle = '#8a8a8a'; ctx.font = '30px ' + F;
+    ctx.fillText('综合竞争力', cardX + pad, iy + 34);
+    ctx.fillStyle = '#ff2442'; ctx.font = '800 96px ' + F;
+    ctx.fillText(String(scores.total), cardX + pad, iy + 128);
+    const numW = ctx.measureText(String(scores.total)).width;
+    ctx.fillStyle = '#8a8a8a'; ctx.font = '30px ' + F;
+    ctx.fillText('/100', cardX + pad + numW + 12, iy + 128);
+    iy += 150;
+    // 四维条
+    const bars = [['硬实力', dims.hard], ['软实力', dims.soft], ['家庭支持', dims.family], ['主动性', dims.active]];
+    const labelW = 130, barMax = cardW - 2 * pad - labelW - 70;
+    bars.forEach(function (b) {
+      const nm = b[0], val = b[1];
+      ctx.fillStyle = '#555'; ctx.font = '30px ' + F; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+      ctx.fillText(nm, cardX + pad, iy + 22);
+      const bx = cardX + pad + labelW, by = iy + 8;
+      ctx.fillStyle = '#ffe0e6'; roundRect(ctx, bx, by, barMax, 28, 14); ctx.fill();
+      const fw = Math.max(0, Math.min(1, val / 100)) * barMax;
+      if (fw > 0) {
+        const g = ctx.createLinearGradient(bx, 0, bx + barMax, 0);
+        g.addColorStop(0, '#ff2442'); g.addColorStop(1, '#ff6680');
+        ctx.fillStyle = g; roundRect(ctx, bx, by, fw, 28, 14); ctx.fill();
+      }
+      ctx.fillStyle = '#ff2442'; ctx.font = '700 30px ' + F; ctx.textAlign = 'right';
+      ctx.fillText(String(val), cardX + cardW - pad, iy + 22);
+      iy += 56;
+    });
+
+    // 双画像
+    y = cardY + cardH + 28;
+    const colGap = 24, colW = (cardW - colGap) / 2;
+    const cols = [
+      { title: '🛡️ 底线型 · 安全区', sub: '再低就会内耗', data: portrait.floor, gold: false },
+      { title: '🌟 理想型 · 天花板', sub: '踮脚够得着', data: portrait.ideal, gold: true },
+    ];
+    const rowDefs = [['城市', 'city'], ['学历', 'edu'], ['月收入', 'income'], ['颜值', 'look']];
+    const colH = 28 + 52 + 4 * 56 + 28;
+    cols.forEach(function (col, ci) {
+      const cx = P + ci * (colW + colGap);
+      ctx.fillStyle = '#ffffff'; roundRect(ctx, cx, y, colW, colH, 22); ctx.fill();
+      ctx.strokeStyle = '#ffe0e6'; ctx.lineWidth = 2; roundRect(ctx, cx, y, colW, colH, 22); ctx.stroke();
+      let cy = y + 28;
+      ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+      ctx.fillStyle = col.gold ? '#ffb648' : '#ff2442'; ctx.font = '700 34px ' + F;
+      ctx.fillText(col.title, cx + 28, cy); cy += 46;
+      ctx.fillStyle = '#999'; ctx.font = '24px ' + F;
+      ctx.fillText(col.sub, cx + 28, cy); cy += 40;
+      rowDefs.forEach(function (r) {
+        ctx.fillStyle = '#555'; ctx.font = '30px ' + F; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+        ctx.fillText(r[0], cx + 28, cy + 22);
+        ctx.fillStyle = '#2b2b2b'; ctx.font = '700 32px ' + F; ctx.textAlign = 'right';
+        ctx.fillText(col.data[r[1]], cx + colW - 28, cy + 22);
+        ctx.strokeStyle = '#ffe0e6'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(cx + 28, cy + 44); ctx.lineTo(cx + colW - 28, cy + 44); ctx.stroke();
+        cy += 56;
+      });
+    });
+
+    // 底部二维码卡
+    let fy = y + colH + 28;
+    const qr = qrcode(0, 'M'); qr.addData(SHARE_URL); qr.make();
+    const count = qr.getModuleCount(); const qrCell = 8; const qrSize = count * qrCell;
+    const fH = Math.max(360, qrSize + 64);
+    const fpad = 36;
+    ctx.fillStyle = '#ffffff'; roundRect(ctx, P, fy, cardW, fH, 22); ctx.fill();
+    ctx.strokeStyle = '#ffe0e6'; ctx.lineWidth = 2; roundRect(ctx, P, fy, cardW, fH, 22); ctx.stroke();
+    // 二维码（品牌红模块）
+    const qx = P + fpad, qy = fy + fpad;
+    ctx.fillStyle = '#ffffff'; roundRect(ctx, qx - 12, qy - 12, qrSize + 24, qrSize + 24, 16); ctx.fill();
+    ctx.fillStyle = '#ff2442';
+    for (let r = 0; r < count; r++) for (let c = 0; c < count; c++) {
+      if (qr.isDark(r, c)) ctx.fillRect(qx + c * qrCell, qy + r * qrCell, qrCell, qrCell);
+    }
+    // 右侧文案
+    const tx = qx + qrSize + 44, tw = cardX + cardW - tx - fpad;
+    let ty = fy + fpad;
+    ctx.textAlign = 'left'; ctx.textBaseline = 'top';
+    ctx.fillStyle = '#2b2b2b'; ctx.font = '800 40px ' + F;
+    ctx.fillText('扫码测你的', tx, ty); ty += 52;
+    ctx.fillText('相亲市场定位', tx, ty); ty += 72;
+    ctx.fillStyle = '#555'; ctx.font = '28px ' + F;
+    ctx.fillText('看你在婚恋市场', tx, ty); ty += 40;
+    ctx.fillText('究竟站在什么位置', tx, ty); ty += 64;
+    ctx.fillStyle = '#ff2442'; ctx.font = '700 28px ' + F;
+    ctx.fillText('💝 嘀嗒老师', tx, ty); ty += 44;
+    ctx.fillStyle = '#b0b0b0'; ctx.font = '22px ' + F;
+    ctx.fillText('GGYJWA.github.io/dating-positioning', tx, ty);
+
+    const totalH = fy + fH + 60;
+    const out = document.createElement('canvas');
+    out.width = W; out.height = totalH;
+    const octx = out.getContext('2d');
+    octx.drawImage(tmp, 0, 0, W, totalH, 0, 0, W, totalH);
+    return out.toDataURL('image/png');
+  }
+
+  function ensureShareOverlay() {
+    if (document.getElementById('shareOverlay')) return;
+    const o = el(`<div class="share-overlay" id="shareOverlay">
+      <div class="share-modal">
+        <img class="share-img" id="shareImg" alt="分享图" />
+        <p class="share-tip">长按图片可保存 · 也可点下方按钮下载</p>
+        <div class="share-btns">
+          <button class="ghost-btn" id="shareClose">关闭</button>
+          <button class="primary-btn" id="shareDownload">💾 保存图片</button>
+        </div>
+      </div>
+    </div>`);
+    document.body.appendChild(o);
+    o.addEventListener('click', (e) => { if (e.target === o) o.style.display = 'none'; });
+    o.querySelector('#shareClose').addEventListener('click', () => { o.style.display = 'none'; });
+    o.querySelector('#shareDownload').addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.href = document.getElementById('shareImg').src;
+      a.download = '相亲市场定位-嘀嗒老师.png';
+      document.body.appendChild(a); a.click(); a.remove();
+    });
+  }
+
+  function generateShareImage() {
+    ensureShareOverlay();
+    const btn = document.getElementById('shotBtn');
+    const old = btn.textContent;
+    btn.disabled = true; btn.textContent = '生成中…';
+    setTimeout(() => {
+      try {
+        const url = buildShareDataURL();
+        document.getElementById('shareImg').src = url;
+        document.getElementById('shareOverlay').style.display = 'flex';
+      } catch (err) {
+        toast('分享图生成失败：' + err.message);
+      }
+      btn.disabled = false; btn.textContent = old;
+    }, 30);
   }
 
   /* ---------- 提示 ---------- */
