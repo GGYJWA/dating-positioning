@@ -1076,7 +1076,7 @@ body { background: var(--cream) !important; }
   pointer-events: none;
   transform-origin: 28% 99%;                 /* 支点落在落地前爪（肥猫素材 x≈.28,y≈.998）：压扁盖章、蹬地起跳都绕它 */
   will-change: transform, opacity;
-  animation: kittenDrop 1.25s linear both;
+  animation: kittenDrop .8s linear both;
 }
 .kitten-drop svg,
 .kitten-drop img.kitten-img { display: block; width: 100%; height: 100%; }
@@ -5011,6 +5011,19 @@ function generateShareImage() {
     }
   }
 
+// 首屏 hero 立即填充：它已内联进 HTML（零请求），不能再等其余远程 SVG 下载完，
+// 否则首屏图会被 coffee/cat/plant/report 四个大文件（合计约 550KB）阻塞 4-5 秒。
+function fillHero() {
+    var svg = CACHE['hero'];
+    if (!svg) return;
+    var slot = document.querySelector('.ink-slot[data-ink="hero"]');
+    if (!slot || slot.dataset.done) return;
+    slot.innerHTML = svg;
+    slot.dataset.done = '1';
+    slot.classList.add('has-ink');
+    startBoil(slot);
+}
+
 function ensure(cb) {
     var g = genderKey();
     var left = SCENES.length;
@@ -5057,6 +5070,7 @@ function seedInline() {
 // 首屏自动初始化：立即填充（不延迟），首屏图与文字同时出现
 function boot() {
     seedInline();
+    fillHero();                    // 首屏图零等待，与文字同时出现
     if (window.__inkFill) window.__inkFill();
     // 立即开始预取，别等用户操作
     setTimeout(function () { prefetch(); }, 60);
@@ -5226,7 +5240,7 @@ if (document.readyState === 'loading') {
     el.addEventListener('animationend', function (e) {
       if (e.animationName === 'kittenDrop') finish();
     });
-    setTimeout(function () { if (!el.classList.contains('paw-frozen')) finish(); }, 1400); // 兜底（1.25s 动画；快照冻结帧除外）
+    setTimeout(function () { if (!el.classList.contains('paw-frozen')) finish(); }, 950); // 兜底（0.8s 动画；快照冻结帧除外）
   }
 
   // 引擎的 click 处理器先注册，事件冒泡到我们时 .sel 已加上；
