@@ -941,6 +941,40 @@ input[type=range]::-moz-range-thumb {
   .ink-report svg { height: 180px; }
 }
 
+
+/* ══════════ 答题必答校验 · 未选高亮 + 提示 ══════════ */
+.form-card.need-fill {
+  position: relative;
+  border-bottom-color: #111 !important;
+}
+.form-card.need-fill::before {
+  content: "本题尚未选择";
+  display: block;
+  font-size: 9px; letter-spacing: .18em; color: #b03a2e;
+  margin-bottom: .55rem;
+}
+.form-card.need-fill .opt:not(.sel) {
+  border-color: #d9b3ad !important;
+  animation: inkShake .32s cubic-bezier(.36,.07,.19,.97) both;
+}
+.form-card.need-fill .opt.sel { border-color: #111 !important; }
+@keyframes inkShake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-3px); }
+  40%, 60% { transform: translateX(3px); }
+}
+
+/* 底部轻提示 */
+.ink-toast {
+  position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%) translateY(10px);
+  background: #111; color: #fff; font-size: 12.5px; letter-spacing: .02em;
+  padding: 11px 20px; border-radius: 2px; z-index: 9999;
+  opacity: 0; pointer-events: none; transition: opacity .22s ease, transform .22s ease;
+  box-shadow: 0 6px 24px rgba(0,0,0,.18); white-space: nowrap; max-width: 90vw;
+}
+.ink-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
   </style>
 </head>
 <body>
@@ -4889,6 +4923,97 @@ function generateShareImage() {
       slots[i].classList.remove('has-ink');
     }
   };
+})();
+
+// ══════════════════ 答题页必答校验（下一步拦截）══════════════════
+// 目标：某题没选就点「下一步」时，不跳转，并把没选的题高亮 + 抖动 + 提示。
+//
+// 实现：在 document 的**捕获阶段**监听 click，命中 .btn-next 时先校验当前屏；
+//       不通过则 preventDefault + stopImmediatePropagation，阻断按钮原本的
+//       onclick（show('sX') / calc()）。不改任何原有 HTML/onclick，零侵入。
+//
+// 判定规则：当前屏内每个**可见**的 .form-card，只要它含可见的 .opts 组，
+//          该组就必须至少有一个 .opt.sel（mpick 多选同理，至少选 1 个）。
+//          - 滑块卡片没有 .opts → 自动跳过（年龄有默认值）
+//          - #sib-job-card 等 display:none 条件卡片 → 隐藏时跳过、显示时必答
+(function () {
+  var TOAST = null;
+
+  function isHidden(el) {
+    if (!el) return true;
+    if (el.style && el.style.display === 'none') return true;
+    try {
+      var cs = getComputedStyle(el);
+      return cs.display === 'none' || cs.visibility === 'hidden';
+    } catch (e) { return false; }
+  }
+
+  function screenOf(el) {
+    while (el && el !== document.body) {
+      if (el.classList && el.classList.contains('screen')) return el;
+      el = el.parentElement;
+    }
+    return null;
+  }
+
+  function missingCards(scr) {
+    var out = [], cards = scr.querySelectorAll('.form-card');
+    for (var i = 0; i < cards.length; i++) {
+      var c = cards[i];
+      if (isHidden(c)) continue;
+      var groups = c.querySelectorAll('.opts');
+      if (!groups.length) continue;              // 无选项组（如纯滑块）跳过
+      for (var g = 0; g < groups.length; g++) {
+        if (isHidden(groups[g])) continue;
+        if (!groups[g].querySelector('.opt.sel')) { out.push(c); break; }
+      }
+    }
+    return out;
+  }
+
+  function toast(msg) {
+    if (!TOAST) {
+      TOAST = document.createElement('div');
+      TOAST.className = 'ink-toast';
+      document.body.appendChild(TOAST);
+    }
+    TOAST.textContent = msg;
+    TOAST.classList.add('show');
+    clearTimeout(TOAST._t);
+    TOAST._t = setTimeout(function () { TOAST.classList.remove('show'); }, 2000);
+  }
+
+  // ① 捕获阶段拦截「下一步」/「查看定位」
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    var btn = (t && t.closest) ? t.closest('.btn-next') : null;
+    if (!btn) return;
+    var scr = screenOf(btn);
+    if (!scr) return;
+    var miss = missingCards(scr);
+    if (!miss.length) return;                    // 全部已选 → 放行原 onclick
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    for (var i = 0; i < miss.length; i++) miss[i].classList.add('need-fill');
+    // 轻微抖动重触发
+    miss[0].classList.remove('need-fill');
+    void miss[0].offsetWidth;
+    miss[0].classList.add('need-fill');
+    try { miss[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (_) {}
+
+    toast('还有 ' + miss.length + ' 道题没选，先选完再继续');
+  }, true);
+
+  // ② 选中后立即清除该题的高亮
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    var opt = (t && t.closest) ? t.closest('.opt') : null;
+    if (!opt) return;
+    var card = opt.closest('.form-card');
+    if (card) card.classList.remove('need-fill');
+  }, true);
 })();
 
 </script>
