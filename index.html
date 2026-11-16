@@ -1056,10 +1056,10 @@ body { background: var(--cream) !important; }
   font-size: 9.5px; letter-spacing: .24em; color: var(--coral-deep); font-weight: 500;
 }
 
-/* ── AI 黑白猫爪：点选时从选项下方伸出 → 拍下 → 缩回下方 → 爪印浮现 ──
-   爪子是 AI 生图二值化后的透明底素材（爪在上、柄在下），黑白色。
-   爪印由 JS 在猫爪动画结束（完全缩回）后才触发 k-stamp，
-   全程爪印与猫爪不同屏。 */
+/* ── 黑白小猫：点选时从选项上方掉下 → 前脚着地盖爪 → 跳走 → 爪印浮现 ──
+   小猫是墨黑剪影（白挖空五官），与答题页手绘单线稿同一调性。
+   爪印由 JS 在小猫动画结束（已跳走）后才触发 k-stamp，
+   全程猫与爪印不同屏。 */
 .opt.k-anim .ck { transition: none; opacity: 0; }
 .opt.k-anim .ck.k-stamp {
   opacity: 1;
@@ -1070,25 +1070,25 @@ body { background: var(--cream) !important; }
   100% { transform: scale(1) translateY(0) rotate(-8deg); opacity: 1; }
 }
 
-.paw-reach {
+.kitten-drop {
   position: fixed; z-index: 9980;
   pointer-events: none;
-  transform-origin: 50% 18%;
+  transform-origin: 50% 88%;                 /* 以前脚为支点，落地压扁 */
   will-change: transform, opacity;
-  animation: pawReach 1.0s cubic-bezier(.33, .9, .4, 1) both;
+  animation: kittenDrop 1.15s cubic-bezier(.33, .9, .4, 1) both;
 }
-.paw-reach .paw-arm-img { display: block; width: 100%; height: 100%; }
-@keyframes pawReach {
-  0%   { transform: translateY(64px) scale(.9); opacity: 0; }          /* 藏在选项下方 */
-  12%  { opacity: 1; }
-  36%  { transform: translateY(0) scale(1); opacity: 1; }              /* 伸到位 */
-  46%  { transform: translateY(3px) scale(1.05, .93); opacity: 1; }    /* 拍下 */
-  56%  { transform: translateY(0) scale(1); opacity: 1; }              /* 抬爪 */
-  72%  { transform: translateY(2px); opacity: 1; }                     /* 稍停 */
-  100% { transform: translateY(68px) scale(.9); opacity: 0; }          /* 缩回下方，随后才盖印 */
+.kitten-drop svg { display: block; width: 100%; height: 100%; }
+@keyframes kittenDrop {
+  0%   { transform: translateY(-46px) rotate(-8deg); opacity: 0; }       /* 画面上方 */
+  10%  { opacity: 1; }
+  34%  { transform: translateY(0) rotate(-3deg); opacity: 1; }           /* 落地 */
+  45%  { transform: translateY(2px) scale(1.06, .9); opacity: 1; }       /* 前脚着地压一下 */
+  56%  { transform: translateY(0) scale(1, 1); opacity: 1; }             /* 起身 */
+  72%  { transform: translateY(-4px) rotate(-2deg); opacity: 1; }        /* 蓄力 */
+  100% { transform: translateY(-52px) rotate(9deg); opacity: 0; }        /* 跳走，随后才盖印 */
 }
 @media (prefers-reduced-motion: reduce) {
-  .paw-reach { animation-duration: .01s; }
+  .kitten-drop { animation-duration: .01s; }
 }
 
 /* 雷达图：淡淡珊瑚填充，比纯灰更年轻，但仍是单线轮廓为主 */
@@ -5176,16 +5176,34 @@ if (document.readyState === 'loading') {
 })();
 
 // ─── cute（奶油猫爪层的小脚本）────────────────────────────────────────────
-// 只做展示层的事：loading 页的「盖章中」猫爪 + 点选时的实体小猫动画。
+// 只做展示层的事：loading 页的「盖章中」猫爪 + 点选时的小猫落地动画。
 // 不碰引擎、不碰状态、不碰任何评分逻辑。
 //
-// 点选流程：小猫（黑白线稿）从选项上方扑下 → 压爪拍下爪印 → 撤离跳走，
-// 爪印留在 .ck 位置（.sel 态）。爪印由 JS 在压爪瞬间触发（k-stamp），
-// 与小猫的 45% 压爪帧对齐（430ms / 1050ms ≈ 41%→45%）。
+// 点选流程：黑白小猫从选项上方掉下来 → 前脚着地盖爪 → 跳走撤离 →
+// 猫离开后爪印才在 .ck 位置浮现（全程猫与爪印不同屏）。
 (function () {
-  // AI 生图的黑白猫爪（从下方伸出，爪在上、柄在下），内联 data URL 保证单文件
-  var PAW_IMG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAADHCAYAAAAnKt6HAAAFlUlEQVR4nO3da27rNhSFUdHIKDL/ebIo0CIXRnJj60GdTa71qwVSW1T4iZItpe3z83Njl/70722y8WyTjW9KH3dvwCST+6efaeFjSh7fEgR83gT/7TXaJGP67vUqjG1JAr5+kn/3um2SMT2/vpAHE/C4SX7XhJ91XGzb9rAXhk/yUe/bJx0Xf1h9Ba4w0a5YtWYdF09WXoErTPIrtmfWcfGNVQPuk27XrOPiByueQveA7Ws3jqtdeHBxOn2y1QI+MgnbwPd6d7KPGFcLOgguY7WA99i7ahyd8K9GvDemI6thO3A3l1X4RCtdA++Z6GdNtnbRNu8d053jsnqHr8A//QKvPDK/O2mu2JazV607D0jfvWbCd85tm8xHoZ1b5Wb5NuD1R0/2EfvxnXEdPZXeu//6bEE/it8F9P/rHP1A6FWjfqFHPxCrOKYR73X23WU9/ZT+I+zWwCsnyeij8YiVuPIKc/WHdEvcNfYIPJK9817Vj657viqaaUy/GT3WHrB/Tw347hvmr755YYSrvu9NGFMvGlLfFgi4yiCrbMcRZ8cWdypY8PfZC23L6QFXG1g/sI3Jk72yWb4j7ttkAVcdUMQRs/BNI3dJuLbv2ySfQl95zXnm43R77u/lPmf87tvF71PyNtCPQjfMP//MqO9+Kzn61VK1CXb1V2Vt588fuRGkJQacdMM88zsaURvwkEmZa+AKN8xfeQ/vjE8/zezMcbb0/XbFrZSz3CnFOaofyEc/6z004ApP8Ty/vpDXM+phjLiIH0Hx3vVed9j74cyMzKsBp9AzPvbH/arPq74VDXi2e27P+u9YQ9sWWYFjBhpo9X2bMv5+55vP8DexUn7RV5lx/BXG1LYA3wXsIQCWjOGCxyIvN8MKnDxBjo5rxnHPOKZhAVt9cya0iT5G6f080x92v+OvPY5SehKdKHmc/Y7tfyy2k2fYfsZrVXf6LNfA5Xc0S17PDw14ltPPv00Ek+RerudvvgZOCeD5ec+U7V6B38WJZjuFfubpJc5S5Y/QLxUwTE3AsEjArl2gGCswTBDwLF8hwVKswBBMwBBMwBBMwBBMwBBMwHCuod/oCBiCCRjONfSORQFDMAHDuVwDA6+xAkMwAUPwI7UChmAChmAChmAChmAChmAChmAChvCA/UE7CGUFhmAChgUCLncLGWAFhmhOoSGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgCGYgOE9pf5GuoAhmIAhmIAhmIBh8oBLXbQDX6zAEEzA8J6+FSJgeE+pS0oBQzABQzABQzABQzABQzABQzABQzABQzABQzABw+QBl7r3E/hiBYZgngeGYFZgCCZgCCZgCCZgCCZgCCZgCCZgCCZgCCZgCCZgCCZgCCZgCCZgCCZgCOaBfghmBYZgAoZgAoZgAoZgAoZgAoZgAoZgAoZgAoZgAoZgAoZgAob3lPqf/QkYggkYggkYggkYggkYggkYggkYggkYggkYggkYggkYggkYggkYFgi41BMYwFfA7b9/BsI4hYZgAoZgAoZgAoZgAoZgAoZgAobXlbsfQsAQTMBwrqE3RgkYggkYggkYggkYJgjYE0kQyAoMwQQMwQQM52mVAy53GxkM1Cs2YgWGRVZgoBgBQzABQ/DnP38G7GYO2K8lrMBlj0SwIqfQEEzAEHzW+ZhtQHCDViVgH2RB0GLlFBqCPWY9MsFBr87xVi1gp9EQ4sgptFWYWfUXf+72xc41MAR7HDyyWIWZTd+CPFYbMJw0l28/ff4t4Hc2UMSk62nxnn0NLGJS9S3U4+QjTeyOYFn9zZ8vs/q+ugKLmFn15Hiv/BrJSkx1fZvA48IjT59lJzGdvuO/Kbf6/rtR/wBqd8L3RmCwrwAAAABJRU5ErkJggg==';
-  var PAW_SVG = '<img class="paw-arm-img" src="'+PAW_IMG+'" alt="">';
+  // 黑白小猫剪影（墨黑填色 + 白挖空五官），viewBox 64×72，前爪在底部 x≈27.5
+  var CAT_SVG =
+    '<svg viewBox="0 0 64 72" aria-hidden="true">' +
+    '<g fill="#1A1A1A">' +
+    // 尾巴
+    '<path d="M45 50 C 55 52, 59 42, 55 33 C 54 30, 51 30, 49 32" fill="none" stroke="#1A1A1A" stroke-width="4.6" stroke-linecap="round"/>' +
+    // 身体
+    '<path d="M30 27 C 20 30, 17 41, 23 50 C 30 58, 44 57, 47 47 C 50 37, 42 27, 30 27 Z"/>' +
+    // 落地的前脚（盖爪印的就是它）
+    '<path d="M24 44 L 24 57 C 23.2 60.4, 25 62.6, 27.5 62.6 C 30 62.6, 31.8 60.4, 31 57 L 31 44 Z"/>' +
+    // 头
+    '<ellipse cx="30" cy="20" rx="10.8" ry="9.8"/>' +
+    // 耳朵
+    '<path d="M21 14 L 19 4 L 29 11 Z"/>' +
+    '<path d="M33 11 L 41 4 L 40 15 Z"/>' +
+    '</g>' +
+    // 眯眯眼 + 鼻嘴（白色挖空）
+    '<g fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round">' +
+    '<path d="M24 20 q 2.2 2.4 4.4 0"/><path d="M32 20 q 2.2 2.4 4.4 0"/>' +
+    '</g>' +
+    '<path d="M28.6 24.4 q 1.4 1.6 2.8 0" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>' +
+    '</svg>';
 
   function boot() {
     var load = document.querySelector('#s-load .loading-screen');
@@ -5197,25 +5215,22 @@ if (document.readyState === 'loading') {
   }
 
   function spawnKitten(opt) {
-    if (document.querySelector('.paw-reach')) return;     // 一次只演一只爪
+    if (document.querySelector('.kitten-drop')) return;     // 一次只演一只猫
     var ck = opt.querySelector('.ck');
     var r = (ck || opt).getBoundingClientRect();
     var el = document.createElement('div');
-    el.className = 'paw-reach';
-    // AI 猫爪图：爪子在图顶部（约 y=0..130/360），柄朝下。
-    // 让爪心落在爪印位置，柄从选项下方伸出。
-    el.innerHTML = PAW_SVG;
-    var W = 36, H = 30;                                    // 显示尺寸（240×199 等比缩到宽 36）
+    el.className = 'kitten-drop';
+    el.innerHTML = CAT_SVG;
+    var W = 36, H = 41;                                    // 小巧尺寸（64:72 等比缩到宽 36）
     el.style.width = W + 'px';
     el.style.height = H + 'px';
-    el.style.left = Math.round(r.left + r.width / 2 - W / 2) + 'px';
-    // 脚趾中心（图片顶部往下约 25px 原图 → 缩放后 ≈ 4px）对准爪印中心
-    el.style.top = Math.round(r.top + r.height / 2 - 4) + 'px';
+    // 前脚掌底（viewBox y=62.6/72 → 缩放后 ≈35.7px）对准爪印中心
+    el.style.left = Math.round(r.left + r.width / 2 - (27.5 / 64 * W)) + 'px';
+    el.style.top = Math.round(r.top + r.height / 2 - (62.6 / 72 * H) + 1) + 'px';
     document.body.appendChild(el);
     opt.classList.add('k-anim');
 
-    // 猫爪完全缩回下方（动画结束）后，爪印才在原位浮现——
-    // 全程爪印和猫爪不同屏，符合「猫爪离开后才出现爪印」。
+    // 小猫跳走（动画结束）后，爪印才在原位浮现——全程猫与爪印不同屏。
     var done = false;
     function finish() {
       if (done) return;
@@ -5224,14 +5239,14 @@ if (document.readyState === 'loading') {
       if (ck) ck.classList.add('k-stamp');
     }
     el.addEventListener('animationend', function (e) {
-      if (e.animationName === 'pawReach') finish();
+      if (e.animationName === 'kittenDrop') finish();
     });
-    setTimeout(function () { if (!el.classList.contains('paw-frozen')) finish(); }, 1200); // 兜底：动画事件万一没触发也要盖印（快照冻结帧除外）
+    setTimeout(function () { if (!el.classList.contains('paw-frozen')) finish(); }, 1250); // 兜底（快照冻结帧除外）
   }
 
   // 引擎的 click 处理器先注册，事件冒泡到我们时 .sel 已加上；
   // 用 pointerdown（capture）记录「点击前未选中」的选项，
-  // click 时若它已变选中 → 放小猫出来拍印。
+  // click 时若它已变选中 → 放小猫出来盖印。
   var pressed = null;
   document.addEventListener('pointerdown', function (e) {
     var opt = e.target.closest ? e.target.closest('.opt') : null;
@@ -5240,7 +5255,7 @@ if (document.readyState === 'loading') {
   document.addEventListener('click', function (e) {
     var opt = e.target.closest ? e.target.closest('.opt') : null;
     if (opt && pressed === opt && opt.classList.contains('sel')) {
-      // 同卡里被切走的旧选项：撤掉它的猫爪态爪印
+      // 同卡里被切走的旧选项：撤掉它的小猫态爪印
       var card = opt.closest('.opts') || opt.parentElement;
       var olds = card ? card.querySelectorAll('.opt.k-anim') : [];
       for (var i = 0; i < olds.length; i++) {
