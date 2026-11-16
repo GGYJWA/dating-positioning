@@ -911,6 +911,23 @@ input[type=range]::-moz-range-thumb {
   .share-btn { margin: 2.2rem 1.25rem .4rem !important; }
 }
 
+/* ══════════ 答题页 · 手绘线稿动图 ══════════ */
+.ink-slot {
+  display: flex; align-items: center; justify-content: center;
+  height: 0; overflow: hidden; opacity: 0;
+  transition: height .45s cubic-bezier(.22,.9,.28,1), opacity .3s ease;
+}
+.ink-slot.has-ink { height: 196px; opacity: 1; margin: .5rem 0 .1rem; }
+.ink-slot svg {
+  height: 196px; width: auto; max-width: 84%; display: block;
+  fill: #111;
+}
+.ink-slot svg g { will-change: transform; }
+@media (max-width: 380px) {
+  .ink-slot.has-ink { height: 168px; }
+  .ink-slot svg { height: 168px; }
+}
+
   </style>
 </head>
 <body>
@@ -953,7 +970,7 @@ input[type=range]::-moz-range-thumb {
   <!-- S1: 年龄城市 -->
   <div class="screen" id="s1">
     <div class="progress-bar-wrap"><div class="progress-labels"><span>基本信息</span><span>1 / 9</span></div><div class="progress-track"><div class="progress-fill" style="width:11%"></div></div></div>
-    <div class="section-label"><div class="section-dot" style="background:#1F6F63"></div><h2>年龄 & 城市</h2><span class="sec-num">01 / 09</span></div>
+    <div class="ink-slot" data-ink="coffee"></div><div class="section-label"><div class="section-dot" style="background:#1F6F63"></div><h2>年龄 & 城市</h2><span class="sec-num">01 / 09</span></div>
     <div class="form-card">
       <label class="field-label">你现在多大？</label>
       <div class="slider-wrap">
@@ -985,7 +1002,7 @@ input[type=range]::-moz-range-thumb {
   <!-- S2: 学历职业 -->
   <div class="screen" id="s2">
     <div class="progress-bar-wrap"><div class="progress-labels"><span>学历 & 职业</span><span>2 / 9</span></div><div class="progress-track"><div class="progress-fill" style="width:22%"></div></div></div>
-    <div class="section-label"><div class="section-dot" style="background:#3B6B82"></div><h2>学历 & 职业</h2><span class="sec-num">02 / 09</span></div>
+    <div class="ink-slot" data-ink="coffee"></div><div class="section-label"><div class="section-dot" style="background:#3B6B82"></div><h2>学历 & 职业</h2><span class="sec-num">02 / 09</span></div>
     <div class="form-card">
       <label class="field-label">最高学历</label>
       <div class="opts">
@@ -1015,7 +1032,7 @@ input[type=range]::-moz-range-thumb {
   <!-- S3: 收入资产 -->
   <div class="screen" id="s3">
     <div class="progress-bar-wrap"><div class="progress-labels"><span>收入 & 个人资产</span><span>3 / 9</span></div><div class="progress-track"><div class="progress-fill" style="width:33%"></div></div></div>
-    <div class="section-label"><div class="section-dot" style="background:#B08432"></div><h2>个人收入 & 资产</h2><span class="sec-num">03 / 09</span></div>
+    <div class="ink-slot" data-ink="coffee"></div><div class="section-label"><div class="section-dot" style="background:#B08432"></div><h2>个人收入 & 资产</h2><span class="sec-num">03 / 09</span></div>
     <div class="form-card">
       <label class="field-label">月收入（税后）</label>
       <div class="slider-wrap">
@@ -1038,7 +1055,7 @@ input[type=range]::-moz-range-thumb {
   <!-- S4: 家庭资产 -->
   <div class="screen" id="s4">
     <div class="progress-bar-wrap"><div class="progress-labels"><span>家庭资产</span><span>4 / 9</span></div><div class="progress-track"><div class="progress-fill" style="width:44%"></div></div></div>
-    <div class="section-label"><div class="section-dot" style="background:#1F6F63"></div><h2>家庭资产背景</h2><span class="sec-num">04 / 09</span></div>
+    <div class="ink-slot" data-ink="plant"></div><div class="section-label"><div class="section-dot" style="background:#1F6F63"></div><h2>家庭资产背景</h2><span class="sec-num">04 / 09</span></div>
     <div class="form-card">
       <label class="field-label">父母名下房产套数（含老家）</label>
       <div class="opts" style="grid-template-columns:1fr 1fr">
@@ -1071,7 +1088,7 @@ input[type=range]::-moz-range-thumb {
   <!-- S5: 家庭结构 -->
   <div class="screen" id="s5">
     <div class="progress-bar-wrap"><div class="progress-labels"><span>家庭结构</span><span>5 / 9</span></div><div class="progress-track"><div class="progress-fill" style="width:55%"></div></div></div>
-    <div class="section-label"><div class="section-dot" style="background:#A8443C"></div><h2>家庭结构</h2><span class="sec-num">05 / 09</span></div>
+    <div class="ink-slot" data-ink="cat"></div><div class="section-label"><div class="section-dot" style="background:#A8443C"></div><h2>家庭结构</h2><span class="sec-num">05 / 09</span></div>
     <div class="form-card">
       <label class="field-label">你是家里第几个孩子</label>
       <div class="opts" style="grid-template-columns:1fr 1fr">
@@ -1104,7 +1121,7 @@ input[type=range]::-moz-range-thumb {
   <!-- S6: 外貌 -->
   <div class="screen" id="s6">
     <div class="progress-bar-wrap"><div class="progress-labels"><span>外貌 & 形象</span><span>6 / 9</span></div><div class="progress-track"><div class="progress-fill" style="width:66%"></div></div></div>
-    <div class="section-label"><div class="section-dot" style="background:#9B6B43"></div><h2>外貌 & 形象</h2><span class="sec-num">06 / 09</span></div>
+    <div class="ink-slot" data-ink="cat"></div><div class="section-label"><div class="section-dot" style="background:#9B6B43"></div><h2>外貌 & 形象</h2><span class="sec-num">06 / 09</span></div>
     <div class="form-card">
       <label class="field-label">颜值自评</label>
       <div class="opts">
@@ -1137,7 +1154,7 @@ input[type=range]::-moz-range-thumb {
   <!-- S7: 性格特质 -->
   <div class="screen" id="s7">
     <div class="progress-bar-wrap"><div class="progress-labels"><span>性格特质</span><span>7 / 9</span></div><div class="progress-track"><div class="progress-fill" style="width:77%"></div></div></div>
-    <div class="section-label"><div class="section-dot" style="background:#14504A"></div><h2>性格特质</h2><span class="sec-num">07 / 09</span></div>
+    <div class="ink-slot" data-ink="cat"></div><div class="section-label"><div class="section-dot" style="background:#14504A"></div><h2>性格特质</h2><span class="sec-num">07 / 09</span></div>
     <div class="form-card">
       <label class="field-label">你的社交倾向</label>
       <div class="opts" style="grid-template-columns:1fr 1fr">
@@ -1171,7 +1188,7 @@ input[type=range]::-moz-range-thumb {
   <!-- S8: 情感态度 -->
   <div class="screen" id="s8">
     <div class="progress-bar-wrap"><div class="progress-labels"><span>情感态度</span><span>8 / 9</span></div><div class="progress-track"><div class="progress-fill" style="width:88%"></div></div></div>
-    <div class="section-label"><div class="section-dot" style="background:#B08432"></div><h2>情感 & 婚育态度</h2><span class="sec-num">08 / 09</span></div>
+    <div class="ink-slot" data-ink="plant"></div><div class="section-label"><div class="section-dot" style="background:#B08432"></div><h2>情感 & 婚育态度</h2><span class="sec-num">08 / 09</span></div>
     <div class="form-card">
       <label class="field-label">感情经历</label>
       <div class="opts" style="grid-template-columns:1fr 1fr">
@@ -1205,7 +1222,7 @@ input[type=range]::-moz-range-thumb {
   <!-- S9: 期望 -->
   <div class="screen" id="s9">
     <div class="progress-bar-wrap"><div class="progress-labels"><span>你的期望</span><span>9 / 9</span></div><div class="progress-track"><div class="progress-fill" style="width:100%"></div></div></div>
-    <div class="section-label"><div class="section-dot" style="background:#1F6F63"></div><h2>择偶优先级</h2><span class="sec-num">09 / 09</span></div>
+    <div class="ink-slot" data-ink="coffee"></div><div class="section-label"><div class="section-dot" style="background:#1F6F63"></div><h2>择偶优先级</h2><span class="sec-num">09 / 09</span></div>
     <div class="form-card">
       <label class="field-label">你最看重对方哪几点？（可多选）</label>
       <div class="opts">
@@ -4739,6 +4756,107 @@ function generateShareImage() {
     btn.disabled = false; btn.innerHTML = ic('image') + old;
   }, 30);
 }
+
+// ══════════════════ 答题页 · 手绘线稿动图（line boil）══════════════════
+// 原理：AI 线稿矢量化后，每条路径各自独立微位移，约 3.3fps 循环切换三帧，
+//       线条产生"呼吸"感，像同一幅画被手绘了三遍。
+// 实现要点：
+//   1) 每条 <path> 保留 vtracer 自带的 transform（丢了会碎成一片）
+//   2) 动画用 JS 直接改 style.transform —— 不依赖 CSS/SVG 动画（浏览器会为省电暂停）
+//   3) SVG 按需 fetch 后内联，避免页面体积过大
+(function () {
+  var CACHE = {};
+  var READY = false;
+  var SHIFT = 5;      // 每条路径位移（px @760 画幅）→ 显示约 1.5px
+  var STEP = 300;     // 每帧 300ms ≈ 3.3fps
+
+  // 确定性伪随机，保证每次刷新同一形态
+  function rnd(seed) {
+    var x = Math.sin(seed * 12.9898) * 43758.5453;
+    return (x - Math.floor(x)) * 2 - 1;
+  }
+
+  function startBoil(box) {
+    var gs = box.querySelectorAll('svg g[class^="ib"]');
+    if (!gs.length) return;
+    var n = gs.length;
+    var frames = [[], [], []];
+    for (var f = 0; f < 3; f++) {
+      for (var i = 0; i < n; i++) {
+        if (f === 0) { frames[f].push([0, 0]); continue; }
+        frames[f].push([rnd(f * 97 + i * 13) * SHIFT, rnd(f * 131 + i * 29) * SHIFT]);
+      }
+    }
+    var fi = 0;
+    setInterval(function () {
+      fi = (fi + 1) % 3;
+      var fr = frames[fi];
+      for (var i = 0; i < n; i++) {
+        gs[i].style.transform = 'translate(' + fr[i][0].toFixed(2) + 'px,' + fr[i][1].toFixed(2) + 'px)';
+      }
+    }, STEP);
+  }
+
+  function genderKey() {
+    try {
+      return (window.state && window.state.gender === 'male') ? 'm' : 'f';
+    } catch (e) { return 'f'; }
+  }
+
+  function fill() {
+    var g = genderKey();
+    var slots = document.querySelectorAll('.ink-slot');
+    for (var k = 0; k < slots.length; k++) {
+      var s = slots[k];
+      if (s.dataset.done) continue;
+      var svg = CACHE[s.dataset.ink + '_' + g];
+      if (!svg) continue;
+      s.innerHTML = svg;
+      s.dataset.done = '1';
+      s.classList.add('has-ink');
+      startBoil(s);
+    }
+  }
+
+  function ensure(cb) {
+    var g = genderKey();
+    var keys = ['coffee', 'cat', 'plant'];
+    var left = keys.length;
+    function done() { left--; if (left === 0) cb(); }
+    keys.forEach(function (k) {
+      if (CACHE[k + '_' + g]) { done(); return; }
+      fetch('ink/' + k + '_' + g + '.svg')
+        .then(function (r) { return r.ok ? r.text() : ''; })
+        .then(function (t) { if (t) CACHE[k + '_' + g] = t; done(); })
+        .catch(function () { done(); });
+    });
+  }
+
+  window.__inkFill = function () {
+    if (READY) { fill(); return; }
+    ensure(function () { READY = true; fill(); });
+  };
+
+  // 每次切屏都尝试填充（首次会触发加载）
+  var _show = window.show;
+  window.show = function (id) {
+    _show(id);
+    if (window.__inkFill) setTimeout(window.__inkFill, 80);
+  };
+
+  // 性别改变 → 清空重载另一套
+  var _setGender = window.setGender;
+  window.setGender = function (g, el) {
+    _setGender(g, el);
+    READY = false;
+    var slots = document.querySelectorAll('.ink-slot');
+    for (var i = 0; i < slots.length; i++) {
+      slots[i].innerHTML = '';
+      slots[i].dataset.done = '';
+      slots[i].classList.remove('has-ink');
+    }
+  };
+})();
 
 </script>
 </body>
