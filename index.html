@@ -842,6 +842,14 @@ input[type=range]::-moz-range-thumb {
   font-size: 12.5px !important; color: var(--gray-2) !important;
   line-height: 2.05 !important; letter-spacing: .01em;
 }
+/* 心理学概念 + 书目角标：显性锚点，灰阶细框，不抢正文（喜茶式第二声部） */
+.cite-tag {
+  display: inline-block; margin: .35rem 0 0 .5rem; padding: 0 7px;
+  border: 1px solid var(--line-2) !important; border-radius: 2px !important;
+  background: var(--paper) !important; color: var(--gray-3) !important;
+  font-size: 10.5px !important; line-height: 1.8 !important;
+  letter-spacing: .02em; white-space: nowrap; vertical-align: baseline;
+}
 
 /* 建议 */
 .adv-list li {
@@ -4353,12 +4361,14 @@ function genProfiles(total, g) {
   return { ideal, base };
 }
 
-// ─── genAnalysis（文案二创版）────────────────────────────────────────────────
+// ─── genAnalysis（文案二创版 · A+B 融合）────────────────────────────────────
 // ★ 只改文字，不改任何数值/阈值/颜色字段结构。
 // ★ 与 score() 完全解耦：score 不调用本函数（已核验），故分数与分布不受影响。
-// ★ 改写取向：保留「相亲市场」框架，但把「招聘式评价」换成
-//   「市场现实 + 心理学视角 + 一个能做的具体动作」，不评判、不说教、不诊断。
-//   素材取向参考：依恋与自我价值、课题分离、边界感、亲密关系中的真实与坦诚。
+// ★ 融合取向：文案主体沿用「朋友跟你说实话」的口语骨架（A·隐性深化），
+//   每条额外挂 cite 角标点出心理学概念 + 书目（B·显性升级）——
+//   既有专业锚点，又不端着。概念均来自知识库实际收录的书，不生造。
+// ★ cite 独立成字段：render.js 渲染成小标签；share.js 只读 text 画分享图，
+//   所以 text 保持纯文本，不嵌 HTML，分享图不受影响。
 function genAnalysis(dims) {
   const dn = { age: '年龄', location: '城市户籍', edu: '学历职业', econ: '个人经济', fasset: '家庭资产', fstruct: '家庭结构', appear: '外貌形象', pers: '性格特质', emo: '情感态度' };
   const g = state.gender;
@@ -4368,113 +4378,113 @@ function genAnalysis(dims) {
   // 年龄
   const age = dims.age;
   if (g === 'female') {
-    if (age >= 88)  items.push({ dim: dn.age, color: '#1D9E75', text: '这个年龄确实握着主动权，市场对你很客气。但选择权越大，越容易把「条件清单」当成安全感——记得给「相处舒服」留一个位置，它不在清单上，却决定你能走多远。' });
-    else if (age >= 65) items.push({ dim: dn.age, color: '#BA7517', text: '市场还愿意给你时间，只是催促声会一年比一年响。别在焦虑里做决定——被催着选的人，往往要用好几年去消化那个选择。' });
-    else             items.push({ dim: dn.age, color: '#D85A30', text: '传统市场会拿年龄压你，这是真的。但「过了年纪」是市场话术，不是对你这个人的判决。真正在乎你的人，先在乎的是你是谁。' });
+    if (age >= 88)  items.push({ dim: dn.age, color: '#1D9E75', text: '这个年龄确实握着主动权，市场对你很客气。但选择权越大，越容易把「条件清单」当成安全感——记得给「相处舒服」留一个位置，它不在清单上，却决定你能走多远。', cite: '《爱的艺术》· 爱是能力' });
+    else if (age >= 65) items.push({ dim: dn.age, color: '#BA7517', text: '市场还愿意给你时间，只是催促声会一年比一年响。别在焦虑里做决定——被催着选的人，往往要用好几年去消化那个选择。', cite: '《我们时代的神经症人格》· 社会焦虑' });
+    else             items.push({ dim: dn.age, color: '#D85A30', text: '传统市场会拿年龄压你，这是真的。但「过了年纪」是市场话术，不是对你这个人的判决——别人怎么给你打分是别人的课题，真正在乎你的人先在乎你是谁。', cite: '《被讨厌的勇气》· 课题分离' });
   } else {
-    if (age >= 85)  items.push({ dim: dn.age, color: '#1D9E75', text: '这个年龄段正撞在男性吸引力的峰值上，事业也刚往上走，成长性还没兑现完。别急着证明什么，稳着来反而是优势。' });
-    else if (age >= 65) items.push({ dim: dn.age, color: '#BA7517', text: '会被催，但成熟稳健本身就是加分项。真正的短板往往不是年龄，而是「除了年龄，没什么可讲」——把生活讲得有意思，比报年龄有用。' });
-    else             items.push({ dim: dn.age, color: '#D85A30', text: '年龄在传统市场确实吃亏，那就不必在人海里硬拼。精准匹配、少而准，比广撒网省力得多，也更像成年人的做法。' });
+    if (age >= 85)  items.push({ dim: dn.age, color: '#1D9E75', text: '这个年龄段正撞在男性吸引力的峰值上，事业也刚往上走，成长性还没兑现完。别急着证明什么，稳着来反而是优势。', cite: '' });
+    else if (age >= 65) items.push({ dim: dn.age, color: '#BA7517', text: '会被催，但成熟稳健本身就是加分项。真正的短板往往不是年龄，而是「除了年龄，没什么可讲」——把生活讲得有意思，比报年龄有用。', cite: '《自卑与超越》· 优越性追求' });
+    else             items.push({ dim: dn.age, color: '#D85A30', text: '年龄在传统市场确实吃亏，那就不必在人海里硬拼。精准匹配、少而准，比广撒网省力得多——你没法决定别人筛不筛你，但能决定把力气花在哪。', cite: '《被讨厌的勇气》· 课题分离' });
   }
 
   // 城市户籍
   const loc = dims.location;
-  if (loc >= 75)      items.push({ dim: dn.location, color: '#1D9E75', text: '城市加户籍是硬通货，很多人专门盯这一项。它给你的不是优越感，是「被认真考虑」的资格——别把这份资格浪费在不对的人身上。' });
-  else if (loc >= 50) items.push({ dim: dn.location, color: '#BA7517', text: '城市条件不拖后腿，也不额外加分。这个位置上拼的是「生活感」：你愿不愿意为对方挪一步、能不能一起把日子规划清楚。' });
-  else                items.push({ dim: dn.location, color: '#D85A30', text: '城市户籍在挑剔的人眼里是道门槛，这是现实。但门槛筛掉的恰恰是「只看条件的人」——换个圈子，你别的优点才有机会被看见。' });
+  if (loc >= 75)      items.push({ dim: dn.location, color: '#1D9E75', text: '城市加户籍是硬通货，很多人专门盯这一项。它给你的不是优越感，是「被认真考虑」的资格——别把这份资格浪费在不对的人身上。', cite: '' });
+  else if (loc >= 50) items.push({ dim: dn.location, color: '#BA7517', text: '城市条件不拖后腿，也不额外加分。这个位置上拼的是「生活感」：你愿不愿意为对方挪一步、能不能一起把日子规划清楚。', cite: '《爱的艺术》· 爱是责任' });
+  else                items.push({ dim: dn.location, color: '#D85A30', text: '城市户籍在挑剔的人眼里是道门槛，这是现实。但门槛筛掉的恰恰是只看条件的人——别人怎么筛是别人的课题，换个圈子，你那些写不进表格的优点才有机会被看见。', cite: '《被讨厌的勇气》· 课题分离' });
 
   // 学历职业
   const edu = dims.edu;
   const jobLabels = { pub: '体制内', fin: '金融/投行', it: '互联网大厂', 'for': '外资企业', med: '医疗/教育', biz: '普通企业', self: '自由职业' };
   const jobName = jobLabels[state.job] || '你现在的职业';
-  if (edu >= 80)      items.push({ dim: dn.edu, color: '#1D9E75', text: `${jobName}在这个市场里是公认的好牌。好牌的意义不是让你高高在上，而是你有底气去选「聊得来」的人，而不是被条件推着走。` });
-  else if (edu >= 60) items.push({ dim: dn.edu, color: '#BA7517', text: `${jobName}不算亮眼，但胜在稳。相亲里很多人最后选的不是最风光的那个，是最让人安心的那个——把「可靠」讲具体，比讲「前途」管用。` });
-  else                items.push({ dim: dn.edu, color: '#D85A30', text: `学历职业在这类场合容易先被扣分。但别人怎么打分是别人的课题，你能做的是把「我在往上走」讲得有细节，而不是急着辩解。` });
+  if (edu >= 80)      items.push({ dim: dn.edu, color: '#1D9E75', text: `${jobName}在这个市场里是公认的好牌。好牌的意义不是让你高高在上，而是你有底气去选「聊得来」的人，而不是被条件推着走。`, cite: '' });
+  else if (edu >= 60) items.push({ dim: dn.edu, color: '#BA7517', text: `${jobName}不算亮眼，但胜在稳。相亲里很多人最后选的不是最风光的那个，是最让人安心的那个——把「可靠」讲具体，比讲「前途」管用。`, cite: '《爱的艺术》· 成熟的爱' });
+  else                items.push({ dim: dn.edu, color: '#D85A30', text: `学历职业在这类场合容易先被扣分。但别人怎么打分是别人的课题，你能做的是把「我在往上走」讲得有细节，而不是急着辩解。`, cite: '《被讨厌的勇气》· 课题分离' });
 
   // 个人经济
   const econ = dims.econ;
-  if (econ >= 80)      items.push({ dim: dn.econ, color: '#1D9E75', text: '收入和房产是你最硬的底气，它让你在关系里有「不将就」的资本。守好这份底气就好，别让它变成「我说了算」——那不叫底气，叫控制。' });
-  else if (econ >= 55) items.push({ dim: dn.econ, color: '#BA7517', text: '经济中等，不算短板也不是王牌。这个位置最该让人看见的是「稳」：有没有储蓄习惯、有没有长期打算，比月薪数字更能让人安心。' });
-  else                 items.push({ dim: dn.econ, color: '#D85A30', text: '经济是眼下最实打实的短板，不用绕。但「现在少」和「一直少」是两件事——让对方看到你的路径，比看到你的存款更重要。' });
+  if (econ >= 80)      items.push({ dim: dn.econ, color: '#1D9E75', text: '收入和房产是你最硬的底气，它让你在关系里有「不将就」的资本。守好这份底气就好，别让它变成「我说了算」——那不叫底气，叫控制。', cite: '《爱的艺术》· 爱不是控制' });
+  else if (econ >= 55) items.push({ dim: dn.econ, color: '#BA7517', text: '经济中等，不算短板也不是王牌。这个位置最该让人看见的是「稳」：有没有储蓄习惯、有没有长期打算，比月薪数字更能让人安心。', cite: '' });
+  else                 items.push({ dim: dn.econ, color: '#D85A30', text: '经济是眼下最实打实的短板，不用绕。但「现在少」和「一直少」是两件事——让对方看到你的路径，比看到你的存款更重要。', cite: '《自卑与超越》· 自卑与补偿' });
 
   // 家庭资产
   const fasset = dims.fasset;
-  if (fasset >= 75)    items.push({ dim: dn.fasset, color: '#1D9E75', text: '父母那边能托底，婚后生活的下限被抬高了，这是很实在的优势。只是别让「我家条件好」不知不觉变成关系里的主导权。' });
-  else if (fasset >= 45) items.push({ dim: dn.fasset, color: '#BA7517', text: '家庭条件普通，没有拖累，这已经过了很多人的及格线。如实说就好——夸大和自贬都会在相处里露馅，坦诚反而省事。' });
-  else                 items.push({ dim: dn.fasset, color: '#D85A30', text: '家庭这块确实偏弱。建议早点讲清楚，这不是自我贬低，是筛掉那些接受不了的人——省下的是双方后面互相消耗的时间。' });
+  if (fasset >= 75)    items.push({ dim: dn.fasset, color: '#1D9E75', text: '父母那边能托底，婚后生活的下限被抬高了，这是很实在的优势。只是别让「我家条件好」不知不觉变成关系里的主导权——爱里没有谁压谁一头。', cite: '《爱的艺术》· 爱是平等' });
+  else if (fasset >= 45) items.push({ dim: dn.fasset, color: '#BA7517', text: '家庭条件普通，没有拖累，这已经过了很多人的及格线。如实说就好——夸大和自贬都会在相处里露馅，坦诚反而省事。', cite: '《谈亲密关系》· 真实与坦诚' });
+  else                 items.push({ dim: dn.fasset, color: '#D85A30', text: '家庭这块确实偏弱。建议早点讲清楚，这不是自我贬低，是筛掉那些接受不了的人——省下的是双方后面互相消耗的时间。', cite: '《谈亲密关系》· 真实与坦诚' });
 
   // 家庭结构
   const fstruct = dims.fstruct;
-  if (fstruct >= 70)   items.push({ dim: dn.fstruct, color: '#1D9E75', text: '家里关系简单、赡养压力小，这对婚后生活质量是实打实的加分项。很多人吃过「家庭太复杂」的亏，你在这上面是轻松的。' });
-  else if (fstruct >= 45) items.push({ dim: dn.fstruct, color: '#BA7517', text: '家庭有点复杂，不必藏着。把预期提前说清楚，比婚后再爆雷强得多——愿意一起面对的，才是能一起过日子的人。' });
-  else                 items.push({ dim: dn.fstruct, color: '#D85A30', text: '赡养压力重或家庭关系复杂，这是硬约束，瞒不住也不该瞒。早点摊开，找能一起扛的人，而不是指望对方「以后会懂」。' });
+  if (fstruct >= 70)   items.push({ dim: dn.fstruct, color: '#1D9E75', text: '家里关系简单、赡养压力小，这对婚后生活质量是实打实的加分项。很多人吃过「家庭太复杂」的亏，你在这上面是轻松的。', cite: '' });
+  else if (fstruct >= 45) items.push({ dim: dn.fstruct, color: '#BA7517', text: '家庭有点复杂，不必藏着。把预期提前说清楚，比婚后再爆雷强得多——愿意一起面对的，才是能一起过日子的人。', cite: '《谈亲密关系》· 真实与坦诚' });
+  else                 items.push({ dim: dn.fstruct, color: '#D85A30', text: '赡养压力重或家庭关系复杂，这是硬约束，瞒不住也不该瞒。别指望对方「以后会懂」——懂是处出来的结果，不是默认设置。早点摊开，你筛掉的是扛不住的人，留下来的才是真能一起过日子的。', cite: '《谈亲密关系》· 真实与坦诚' });
 
   // 外貌形象
   const appear = dims.appear;
-  if (appear >= 75)    items.push({ dim: dn.appear, color: '#1D9E75', text: '外形是你的第一印象加分项，线下见面很占便宜。但别只靠这个——第一眼让人想认识你，第二眼才决定要不要继续，后者靠的是别的。' });
-  else if (appear >= 50) items.push({ dim: dn.appear, color: '#BA7517', text: '外貌中等，但「整体感」比五官更能打。发型、穿搭、体态这三件事理顺，印象分能有明显提升，成本还很低。' });
-  else                 items.push({ dim: dn.appear, color: '#D85A30', text: '外貌目前是弱项，可它偏偏是最容易靠后天改的一项。不用动刀，先把发型、衣服合身、体重这三件基础做好，变化会超出你预期。' });
+  if (appear >= 75)    items.push({ dim: dn.appear, color: '#1D9E75', text: '外形是你的第一印象加分项，线下见面很占便宜。但别只靠这个——第一眼让人想认识你，第二眼才决定要不要继续，后者靠的是别的。', cite: '' });
+  else if (appear >= 50) items.push({ dim: dn.appear, color: '#BA7517', text: '外貌中等，但「整体感」比五官更能打。发型、穿搭、体态这三件事理顺，印象分能有明显提升，成本还很低。', cite: '' });
+  else                 items.push({ dim: dn.appear, color: '#D85A30', text: '外貌是目前最容易改的一项，也最容易让人先给自己判死刑。很多人不是输在长相，是输在「我反正不行」那一秒——先把发型、衣服合身、体态这三件基础做好，你会重新拿回描述自己的权利。', cite: '《自卑与超越》· 自卑与补偿' });
 
   // 性格特质
   const pers = dims.pers;
-  if (pers >= 80)      items.push({ dim: dn.pers, color: '#1D9E75', text: '情绪稳、会沟通，这是长期关系里最值钱的东西，比任何硬件都难替代。你手里握着的，是别人很难速成的那部分。' });
-  else if (pers >= 60) items.push({ dim: dn.pers, color: '#BA7517', text: '性格整体不错，偶尔在冲突里容易上头。练一句「我现在有点情绪，晚点再说」——这句话能帮你省掉很多场没必要吵赢的架。' });
-  else                 items.push({ dim: dn.pers, color: '#D85A30', text: '情绪稳定性和沟通方式值得留意，这是长期关系里摩擦最多的地方。不是要你改性格，是学会在情绪上来时先停三秒，再开口。' });
+  if (pers >= 80)      items.push({ dim: dn.pers, color: '#1D9E75', text: '情绪稳、会沟通，这是长期关系里最值钱的东西，比任何硬件都难替代。你手里握着的，是别人很难速成的那部分。', cite: '《爱的艺术》· 爱是能力' });
+  else if (pers >= 60) items.push({ dim: dn.pers, color: '#BA7517', text: '性格整体不错，偶尔在冲突里容易上头。那句「我现在有点情绪，晚点再说」值得练——不是回避，是把「赢这场架」换成「保住这段关系」。你争的很多时候不是对错，是被看见，而那可以换一种方式拿到。', cite: '《爱的艺术》· 爱是能力' });
+  else                 items.push({ dim: dn.pers, color: '#D85A30', text: '情绪稳定性和沟通方式值得留意，这是长期关系里摩擦最多的地方。不是要你改性格，是学会在情绪上来时先停三秒，再开口。', cite: '《爱的艺术》· 爱是能力' });
 
   // 情感态度
   const emo = dims.emo;
-  if (emo >= 78)       items.push({ dim: dn.emo, color: '#1D9E75', text: '婚育想法清楚、父母也开明，这在相亲里是稀缺的「低摩擦」配置。双方都省心，这种省心本身就值钱。' });
-  else if (emo >= 55)  items.push({ dim: dn.emo, color: '#BA7517', text: '态度偏中性，建议先问清楚自己：是想结婚，还是被催得想结婚。这两件事差很远，想明白再出门，能少走很多弯路。' });
-  else                 items.push({ dim: dn.emo, color: '#D85A30', text: '婚育或父母干涉这块有隐患，别拖到关系深了才说。早点摊开是保护对方，也是保护你自己——藏着的东西，最后都要还。' });
+  if (emo >= 78)       items.push({ dim: dn.emo, color: '#1D9E75', text: '婚育想法清楚、父母也开明，这在相亲里是稀缺的「低摩擦」配置。双方都省心，这种省心本身就值钱。', cite: '' });
+  else if (emo >= 55)  items.push({ dim: dn.emo, color: '#BA7517', text: '态度偏中性，先问自己一句：是想结婚，还是被催得想结婚。这两件事差很远——前者你知道自己在找什么，后者你只是在躲一份催促。想明白再出门，能少走很多弯路。', cite: '《我们时代的神经症人格》· 社会焦虑' });
+  else                 items.push({ dim: dn.emo, color: '#D85A30', text: '婚育或父母干涉这块有隐患，别拖到关系深了才说。早点摊开是保护对方，也是保护你自己——藏着的东西，最后都要还。', cite: '《谈亲密关系》· 真实与坦诚' });
 
   return items;
 }
 
-// ─── genAdvice（文案二创版）──────────────────────────────────────────────────
-// ★ 触发条件与原版完全一致，只改措辞；返回结构 {c, t} 不变。
+// ─── genAdvice（文案二创版 · A+B 融合）───────────────────────────────────────
+// ★ 触发条件与原版完全一致，只改措辞；返回结构 {c, t} 不变（cite 为附加字段）。
 function genAdvice(total, dims) {
   const advices = [];
   const g = state.gender;
 
   if (dims.econ < 55) {
     if (g === 'female') {
-      advices.push({ c: '#D4537E', t: '经济不高不是你的短板，反倒可能是护城河。能养活自己的女生，在关系里更敢说「不」——那份底气，比任何条件都吸引人。' });
+      advices.push({ c: '#D4537E', t: '经济不高不是你的短板，反倒可能是护城河。能养活自己的女生，在关系里更敢说「不」——那份底气，比任何条件都吸引人。', cite: '《被讨厌的勇气》· 课题分离' });
     } else {
-      advices.push({ c: '#D85A30', t: '收入确实是最被盯的一项，别躲。但比「现在拿多少」更打动人的是「你在怎么变好」——给对方一个三年内看得见的路径。' });
+      advices.push({ c: '#D85A30', t: '收入确实是最被盯的一项，别躲。但比「现在拿多少」更打动人的是「你在怎么变好」——给对方一个三年内看得见的路径。', cite: '《自卑与超越》· 自卑与补偿' });
     }
   }
 
   if (dims.appear < 50) {
-    advices.push({ c: '#7F77DD', t: '外貌是回报最快的一项。发型、衣服合身、体重，三件基础做好，三个月就能看出差别。先把「干净利落」做到位，比研究整容有用得多。' });
+    advices.push({ c: '#7F77DD', t: '外貌是回报最快的一项。发型、衣服合身、体重，三件基础做好，三个月就能看出差别。先把「干净利落」做到位，比研究整容有用得多。', cite: '《自卑与超越》· 自卑与补偿' });
   }
 
   if (dims.fstruct < 50) {
-    advices.push({ c: '#BA7517', t: '家庭这块复杂或压力重，别等谈婚论嫁才说。第二次见面就坦诚——不是自曝其短，是筛掉扛不住的人，省下的是双方的时间。' });
+    advices.push({ c: '#BA7517', t: '家庭这块复杂或压力重，别等谈婚论嫁才说。第二次见面就坦诚——不是自曝其短，是筛掉扛不住的人，省下的是双方的时间。', cite: '《谈亲密关系》· 真实与坦诚' });
   }
 
   if (dims.pers < 60) {
-    advices.push({ c: '#534AB7', t: '情绪管理是长期关系里回报最高的一笔投资。从很小的地方开始：生气时先不回消息，等十分钟再说话。比学一堆沟通技巧都管用。' });
+    advices.push({ c: '#534AB7', t: '情绪管理是长期关系里回报最高的一笔投资。从很小的地方开始：生气时先不回消息，等十分钟再说话。比学一堆沟通技巧都管用。', cite: '《爱的艺术》· 爱是能力' });
   }
 
   if (state.kids === 'dink' || state.kids === 'marry') {
-    advices.push({ c: '#1D9E75', t: '你的婚育想法和传统预期不一样，这不是问题，藏着才是问题。早点说清楚，你要找的是同频的人，不是被你说服的人。' });
+    advices.push({ c: '#1D9E75', t: '你的婚育想法和传统预期不一样，这不是问题，藏着才是问题。早点说清楚，你要找的是同频的人，不是被你说服的人。', cite: '《谈亲密关系》· 真实与坦诚' });
   }
 
   if (state.parents === 'heavy' || state.parents === 'control') {
-    advices.push({ c: '#D85A30', t: '父母管得多，先要处理的是你和父母的边界，不是你和对象的关系。边界没立起来，换谁来都会被卷进来。' });
+    advices.push({ c: '#D85A30', t: '父母管得多，先要处理的是你和父母的边界，不是你和对象的关系。边界没立起来，换谁来都会被卷进来。', cite: '《被讨厌的勇气》· 课题分离' });
   }
 
   if (state.active === 'passive' || state.active === 'shy') {
-    advices.push({ c: '#D4537E', t: '被动等待在相亲里几乎等于弃权。不用逼自己变外向，只做一件事：想见就主动约第二次。主动一次，胜过纠结一周。' });
+    advices.push({ c: '#D4537E', t: '被动等待在相亲里几乎等于弃权，但你不必逼自己变外向。只做一件小事：想见就主动约第二次。主动不是讨好，是把球拿回自己手里——一次主动，胜过一周纠结。', cite: '《我们时代的神经症人格》· 防御策略' });
   }
 
   if (total >= 75) {
-    advices.push({ c: '#7F77DD', t: '你条件不错，但条件好的人最容易掉进一个坑——总觉得「还有更好的」。选择多不等于选择对，窗口期是真实存在的。' });
+    advices.push({ c: '#7F77DD', t: '你条件不错，但条件好的人最容易掉进一个坑——总觉得「还有更好的」。选择多不等于选择对，窗口期是真实存在的。', cite: '' });
   }
 
   if (advices.length === 0) {
-    advices.push({ c: '#1D9E75', t: '你的条件整体均衡，没有明显硬伤。接下来最该练的不是「更好」，是「更真」——相亲里最打动人的，常常是你不太完美的那部分。' });
-    advices.push({ c: '#D4537E', t: '别把自己包装成「完美候选人」。相亲不是面试，一个敢说「我这个不太行」的人，比一个处处得体的人更容易被记住。' });
+    advices.push({ c: '#1D9E75', t: '你的条件整体均衡，没有明显硬伤。接下来最该练的不是「更好」，是「更真」——相亲里最打动人的，常常是你不太完美的那部分。', cite: '《谈亲密关系》· 真实与坦诚' });
+    advices.push({ c: '#D4537E', t: '别把自己包装成「完美候选人」。相亲不是面试，一个敢说「我这个不太行」的人，比一个处处得体的人更容易被记住。', cite: '《爱的艺术》· 爱是能力' });
   }
 
   return advices;
@@ -4530,13 +4540,16 @@ function render({ total, dims }) {
     return '<div class="analysis-item"><div class="analysis-bar" style="background:' + tone(item.color) + '">' +
       String(i + 1).padStart(2, '0') + '</div><div class="analysis-body">' +
       '<div class="analysis-dim">' + item.dim + '</div>' +
-      '<div class="analysis-txt">' + item.text + '</div></div></div>';
+      '<div class="analysis-txt">' + item.text +
+      (item.cite ? '<span class="cite-tag">' + item.cite + '</span>' : '') +
+      '</div></div></div>';
   }).join('');
 
   // ── 建议（序号徽章，保留 .adv-list li）──
   const adviceH = adviceItems.map(function (a, i) {
     return '<li><div class="adv-dot" style="background:' + tone(a.c) + '">' +
-      String(i + 1).padStart(2, '0') + '</div><span>' + a.t + '</span></li>';
+      String(i + 1).padStart(2, '0') + '</div><span>' + a.t +
+      (a.cite ? '<span class="cite-tag">' + a.cite + '</span>' : '') + '</span></li>';
   }).join('');
 
   const bd = Object.keys(dims).reduce(function (a, b) { return dims[a] > dims[b] ? a : b; });
