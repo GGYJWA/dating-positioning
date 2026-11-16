@@ -303,56 +303,59 @@
 
     .restart-btn { display: block; margin: .75rem auto .5rem; padding: .55rem 1.5rem; border: none; background: transparent; color: var(--text-sec); font-size: 14px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 /* ═══════════════════════════════════════════════════════════════════════════
-   二创皮肤「墨青纸本 · Ink & Paper」—— 纯视觉覆盖层
+   二创皮肤「暖砂手账 · Warm Sand」—— 纯视觉覆盖层
    规则：本文件只覆盖表现，不含任何评分/文案逻辑；引擎函数与题库不受影响。
    换主题只需改 :root 里的色值。
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* 纸本基底 */
-  --paper:      #F4F1E9;
-  --paper-2:    #EAE4D6;
+  /* 暖砂基底 */
+  --paper:      #FBF5EC;
+  --paper-2:    #F2E8DA;
   --card:       #FFFDF8;
-  --line:       #DCD5C4;
-  --line-2:     #C6BEA9;
-  /* 墨色文字 */
-  --ink:        #1E3230;
-  --ink-2:      #4C5E5A;
-  --ink-3:      #83918C;
-  /* 主色：墨青 / 松绿 */
-  --jade:       #1F6F63;
-  --jade-deep:  #14504A;
-  --jade-soft:  #DEEBE6;
-  /* 点缀：琥珀金 / 朱砂 */
-  --gold:       #B08432;
-  --gold-soft:  #F4E9CD;
-  --seal:       #A8443C;
-  --seal-soft:  #F6E5E1;
-  /* 五档语义色 */
-  --lv1: #B08432; --lv1s: #F4E9CD;
-  --lv2: #1F6F63; --lv2s: #DEEBE6;
-  --lv3: #3B6B82; --lv3s: #DDE9EE;
-  --lv4: #9B6B43; --lv4s: #F0E4D6;
-  --lv5: #A8443C; --lv5s: #F6E5E1;
+  --line:       #EADCC9;
+  --line-2:     #D9C7B1;
+  /* 暖色文字 */
+  --ink:        #3B322B;
+  --ink-2:      #6E6055;
+  --ink-3:      #9C8B7D;
+  /* 主色：陶土玫瑰 */
+  --clay:       #BC6F5C;
+  --clay-deep:  #9A5443;
+  --clay-soft:  #F7E4DC;
+  /* 点缀：鼠尾草 / 赭金 */
+  --sage:       #84957A;
+  --sage-soft:  #EAEFE3;
+  --ochre:      #C08A3E;
+  --ochre-soft: #F8EED9;
+  /* 印章 */
+  --seal:       #B4563F;
+  --seal-soft:  #F7E3DB;
+  /* 五档语义色（色相刻意拉开，确保一眼可辨） */
+  --lv1: #7D5A6E; --lv1s: #F0E5EC;   /* 顶流 · 藕紫 */
+  --lv2: #BC6F5C; --lv2s: #F7E4DC;   /* 优质 · 陶土玫瑰 */
+  --lv3: #5E85A0; --lv3s: #E3ECF2;   /* 中坚 · 雾蓝 */
+  --lv4: #C08A3E; --lv4s: #F8EED9;   /* 普通 · 赭金 */
+  --lv5: #A2988A; --lv5s: #F0EBE4;   /* 重定位 · 灰褐 */
 
   /* 覆盖原版变量 */
-  --text: #1E3230;
-  --text-sec: #4C5E5A;
+  --text: #3B322B;
+  --text-sec: #6E6055;
   --bg: #FFFDF8;
-  --bg-sec: #F4F1E9;
-  --border: #DCD5C4;
-  --border-sec: #C6BEA9;
-  --radius-md: 5px;
-  --radius-lg: 7px;
+  --bg-sec: #FBF5EC;
+  --border: #EADCC9;
+  --border-sec: #D9C7B1;
+  --radius-md: 9px;
+  --radius-lg: 12px;
   color-scheme: light;
 }
 
-/* 强制浅色纸本，屏蔽系统深色模式的变量反转 */
+/* 强制浅色暖砂，屏蔽系统深色模式 */
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #1E3230; --text-sec: #4C5E5A;
-    --bg: #FFFDF8; --bg-sec: #F4F1E9;
-    --border: #DCD5C4; --border-sec: #C6BEA9;
+    --text: #3B322B; --text-sec: #6E6055;
+    --bg: #FFFDF8; --bg-sec: #FBF5EC;
+    --border: #EADCC9; --border-sec: #D9C7B1;
   }
 }
 
@@ -365,24 +368,21 @@ html, body {
 #app {
   background: var(--paper) !important;
   padding-bottom: 3.5rem;
-  /* 极淡纸纹 */
-  background-image: repeating-linear-gradient(0deg, rgba(31,111,99,.018) 0 1px, transparent 1px 4px) !important;
 }
 
 @media (min-width: 600px) {
-  body { background: #E7E1D3 !important; }
+  body { background: #EFE3D2 !important; }
   #app {
-    border-radius: 3px;
-    border: 1px solid var(--line-2);
-    box-shadow: 0 2px 0 rgba(31,111,99,.10), 0 18px 44px rgba(30,50,48,.14);
+    border-radius: 18px;
+    box-shadow: 0 2px 4px rgba(122,90,60,.07), 0 20px 48px rgba(122,90,60,.15);
   }
 }
-@media (min-width: 960px) { body { background: #E3DDCE !important; } }
-@media (min-width: 600px) and (prefers-color-scheme: dark) { body { background: #E7E1D3 !important; } }
+@media (min-width: 960px) { body { background: #EBDDCA !important; } }
+@media (min-width: 600px) and (prefers-color-scheme: dark) { body { background: #EFE3D2 !important; } }
 
 /* ── 衬线标题体系 ── */
 .serif, .hero h1, .r-title, .a-card h3, .sec-div-txt, .section-label h2,
-.profile-head-title, .radar-title, .gauge-title, .band-title {
+.profile-head-title, .radar-title, .gauge-title, .band-title, .ruler-current {
   font-family: "Songti SC", "STSong", "Noto Serif SC", "SimSun", Georgia, serif;
 }
 
@@ -392,353 +392,412 @@ html, body {
   fill: none; stroke: currentColor; stroke-width: 1.7;
   stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
 }
-.ic-lg { width: 42px; height: 42px; stroke-width: 1.15; }
 
-/* ── 顶部 HERO：纸本 + 墨青渐晕 + 印章 ── */
+/* ── 顶部 HERO ── */
 .hero {
   position: relative;
-  background: linear-gradient(168deg, #EFEDE3 0%, #E4EBE5 52%, #DCE7E1 100%) !important;
-  border-radius: 0 !important;
-  border-bottom: 1px solid var(--line-2);
-  padding: 2.35rem 1.5rem 1.85rem;
-  margin-bottom: 1.15rem;
+  background: linear-gradient(165deg, #FDF7EE 0%, #F8EADC 55%, #F5E4DA 100%) !important;
+  border-radius: 0 0 22px 22px !important;
+  border-bottom: 1px solid var(--line);
+  padding: 2.35rem 1.5rem 1.9rem;
+  margin-bottom: 1.1rem;
   overflow: hidden;
 }
-/* 山形水印 */
 .hero::before {
-  content: ''; position: absolute; left: -8%; right: -8%; bottom: -30px; height: 130px;
-  background: radial-gradient(ellipse 60% 100% at 22% 100%, rgba(31,111,99,.13), transparent 70%),
-              radial-gradient(ellipse 55% 100% at 78% 100%, rgba(20,80,74,.10), transparent 70%);
-  pointer-events: none;
-}
-/* 顶部双线 */
-.hero::after {
-  content: ''; position: absolute; left: 1.5rem; right: 1.5rem; top: 12px; height: 3px;
-  border-top: 1px solid rgba(31,111,99,.28); border-bottom: 1px solid rgba(31,111,99,.14);
+  content: ''; position: absolute; left: -10%; right: -10%; bottom: -44px; height: 130px;
+  background: radial-gradient(ellipse 58% 100% at 24% 100%, rgba(188,111,92,.13), transparent 72%),
+              radial-gradient(ellipse 52% 100% at 80% 100%, rgba(192,138,62,.10), transparent 72%);
   pointer-events: none;
 }
 .hero > * { position: relative; z-index: 1; }
 .hero-emoji {
-  width: 62px; height: 62px; margin: 0 auto .85rem;
+  width: 62px; height: 62px; margin: 0 auto .8rem;
   display: flex; align-items: center; justify-content: center;
-  color: var(--jade);
-  border: 1px solid rgba(31,111,99,.35);
+  color: var(--clay);
+  border: 1px solid rgba(188,111,92,.32);
   border-radius: 50%;
-  background: rgba(255,253,248,.72);
-  box-shadow: 0 0 0 5px rgba(31,111,99,.055), inset 0 0 0 3px rgba(255,253,248,.9), inset 0 0 0 4px rgba(31,111,99,.16);
+  background: rgba(255,253,248,.8);
+  box-shadow: 0 4px 14px rgba(188,111,92,.13), inset 0 0 0 4px rgba(255,253,248,.85);
 }
-.hero-emoji .ic { width: 32px; height: 32px; stroke-width: 1.3; }
+.hero-emoji .ic { width: 30px; height: 30px; stroke-width: 1.35; }
 .hero h1 {
-  font-size: 26px; font-weight: 700; color: var(--jade-deep) !important;
-  letter-spacing: .16em; margin-bottom: .55rem;
+  font-size: 25px; font-weight: 700; color: var(--clay-deep) !important;
+  letter-spacing: .1em; margin-bottom: .5rem;
 }
-.hero p { color: var(--ink-2) !important; font-size: 13px; letter-spacing: .04em; line-height: 1.8; }
-.tag-row { margin-top: 1rem; gap: 6px; }
+.hero p { color: var(--ink-2) !important; font-size: 13px; letter-spacing: .03em; line-height: 1.8; }
+.tag-row { margin-top: .95rem; gap: 6px; }
 .tag {
-  background: rgba(255,253,248,.78) !important;
-  color: var(--jade-deep) !important;
-  border: 1px solid rgba(31,111,99,.32) !important;
-  border-radius: 3px !important;
-  font-size: 11px; padding: 4px 9px; letter-spacing: .03em;
+  background: rgba(255,253,248,.85) !important;
+  color: var(--clay-deep) !important;
+  border: 1px solid rgba(188,111,92,.28) !important;
+  border-radius: 99px !important;
+  font-size: 11px; padding: 5px 11px; letter-spacing: .02em;
   display: inline-flex; align-items: center; gap: 5px;
 }
 .tag .ic { width: 12px; height: 12px; }
-/* 朱砂印章 */
+/* 印章 */
 .hero-seal {
-  position: absolute; top: 26px; right: 20px; z-index: 2;
-  width: 34px; height: 34px; border: 1.5px solid var(--seal); border-radius: 2px;
+  position: absolute; top: 24px; right: 20px; z-index: 2;
+  width: 36px; height: 36px; border: 1.5px solid var(--seal); border-radius: 7px;
   color: var(--seal); font-family: "Songti SC","STSong",serif;
-  font-size: 11px; line-height: 1.15; font-weight: 700;
+  font-size: 11px; line-height: 1.2; font-weight: 700;
   display: flex; align-items: center; justify-content: center; text-align: center;
-  letter-spacing: 0; padding: 2px; transform: rotate(6deg); opacity: .88;
+  letter-spacing: 0; padding: 2px; transform: rotate(5deg); opacity: .82;
 }
 
 /* ── 隐私条 ── */
 .privacy-bar {
-  background: var(--jade-soft) !important;
-  border: 1px solid rgba(31,111,99,.28) !important;
-  border-left: 3px solid var(--jade) !important;
-  border-radius: 3px !important;
+  background: var(--sage-soft) !important;
+  border: 1px solid rgba(132,149,122,.32) !important;
+  border-left: 3px solid var(--sage) !important;
+  border-radius: 9px !important;
   align-items: center;
 }
-.privacy-bar .ic { color: var(--jade); width: 17px; height: 17px; }
-.privacy-bar p { color: var(--jade-deep) !important; font-size: 12px; }
+.privacy-bar .ic { color: var(--sage); width: 17px; height: 17px; }
+.privacy-bar p { color: #4E5B45 !important; font-size: 12px; }
 
 /* ── 表单卡片 ── */
 .form-card {
   background: var(--card) !important;
   border: 1px solid var(--line) !important;
-  border-radius: 4px !important;
-  box-shadow: 0 1px 0 rgba(30,50,48,.03);
+  border-radius: 12px !important;
+  box-shadow: 0 1px 2px rgba(122,90,60,.04);
 }
-.field-label { color: var(--ink-2) !important; font-size: 12px; letter-spacing: .04em; }
+.field-label { color: var(--ink-2) !important; font-size: 12px; letter-spacing: .03em; }
 
-/* 章节标签：编号 + 细线 */
+/* 章节标签 */
 .section-label { gap: 9px; padding-top: 1rem; }
 .section-dot {
-  width: 8px; height: 8px; border-radius: 1px !important;
+  width: 8px; height: 8px; border-radius: 3px !important;
   transform: rotate(45deg); flex-shrink: 0;
 }
-.section-label h2 { font-size: 16px; font-weight: 700; color: var(--jade-deep) !important; letter-spacing: .1em; }
+.section-label h2 { font-size: 16px; font-weight: 700; color: var(--clay-deep) !important; letter-spacing: .08em; }
 .section-label .sec-num {
-  font-family: Georgia, serif; font-size: 11px; color: var(--gold);
-  letter-spacing: .08em; margin-left: auto; font-weight: 600;
+  font-family: Georgia, serif; font-size: 11px; color: var(--ochre);
+  letter-spacing: .06em; margin-left: auto; font-weight: 600;
 }
 
 /* ── 进度条 ── */
-.progress-labels { color: var(--ink-2) !important; font-size: 11px; letter-spacing: .05em; }
-.progress-track { height: 3px; background: var(--paper-2) !important; border: none !important; border-radius: 0 !important; }
-.progress-fill { background: linear-gradient(90deg, var(--jade-deep), var(--jade) 60%, var(--gold)) !important; border-radius: 0 !important; }
+.progress-labels { color: var(--ink-2) !important; font-size: 11px; letter-spacing: .04em; }
+.progress-track { height: 3px; background: var(--paper-2) !important; border: none !important; border-radius: 99px !important; }
+.progress-fill { background: linear-gradient(90deg, var(--clay-deep), var(--clay) 62%, var(--ochre)) !important; border-radius: 99px !important; }
 
-/* ── 选项 / 性别按钮：方角描边 ── */
+/* ── 选项 / 性别按钮 ── */
 .gender-btn, .opt {
   background: var(--card) !important;
   border: 1px solid var(--line-2) !important;
-  border-radius: 4px !important;
+  border-radius: 10px !important;
   color: var(--ink) !important;
   font-size: 13px;
 }
 .gender-btn.sel, .opt.sel {
-  background: var(--jade-soft) !important;
-  border-color: var(--jade) !important;
-  color: var(--jade-deep) !important;
-  box-shadow: inset 3px 0 0 var(--jade);
+  background: var(--clay-soft) !important;
+  border-color: var(--clay) !important;
+  color: var(--clay-deep) !important;
+  box-shadow: inset 3px 0 0 var(--clay);
   font-weight: 600;
 }
-.gender-btn .ic, .opt .ic { width: 15px; height: 15px; color: var(--jade); margin-right: 5px; }
-.opt .ck { color: var(--jade); font-size: 12px; }
+.gender-btn .ic, .opt .ic { width: 15px; height: 15px; color: var(--clay); margin-right: 5px; }
+.opt .ck { color: var(--clay); font-size: 12px; }
 
 /* ── 滑块 ── */
-.slider-val { color: var(--jade-deep) !important; font-family: Georgia, serif; font-size: 22px; }
-input[type=range] { background: linear-gradient(90deg, var(--jade), var(--gold)) !important; height: 3px !important; border-radius: 0 !important; }
+.slider-val { color: var(--clay-deep) !important; font-family: Georgia, serif; font-size: 22px; }
+input[type=range] { background: linear-gradient(90deg, var(--clay), var(--ochre)) !important; height: 3px !important; border-radius: 99px !important; }
 input[type=range]::-webkit-slider-thumb {
-  background: var(--card) !important; border: 2px solid var(--jade) !important;
-  border-radius: 2px !important; transform: rotate(45deg); box-shadow: none !important;
+  background: var(--card) !important; border: 2px solid var(--clay) !important;
+  border-radius: 50% !important; box-shadow: 0 2px 5px rgba(122,90,60,.25) !important;
 }
 input[type=range]::-moz-range-thumb {
-  background: var(--card) !important; border: 2px solid var(--jade) !important; border-radius: 2px !important;
+  background: var(--card) !important; border: 2px solid var(--clay) !important; border-radius: 50% !important;
 }
 
-/* ── 按钮：墨青实底方角 ── */
+/* ── 按钮 ── */
 .btn-next {
-  background: var(--jade-deep) !important;
-  border: 1px solid var(--jade-deep) !important;
-  border-radius: 4px !important;
-  color: #FFFDF8 !important;
-  font-size: 15px; letter-spacing: .12em; font-weight: 600;
-  box-shadow: 3px 3px 0 rgba(176,132,50,.32);
+  background: var(--clay-deep) !important;
+  border: 1px solid var(--clay-deep) !important;
+  border-radius: 99px !important;
+  color: #FFFBF6 !important;
+  font-size: 15px; letter-spacing: .08em; font-weight: 600;
+  box-shadow: 0 4px 12px rgba(154,84,67,.26);
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
 }
-.btn-next:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 rgba(176,132,50,.32); }
-.btn-next .ic { width: 16px; height: 16px; color: var(--gold-soft); }
+.btn-next:active { transform: translateY(1px); box-shadow: 0 2px 6px rgba(154,84,67,.22); }
+.btn-next .ic { width: 16px; height: 16px; color: #F7E4DC; }
 .btn-back { color: var(--ink-3) !important; font-size: 12px; }
 
 /* ── Loading ── */
-.loading-screen .ic { color: var(--jade); width: 46px; height: 46px; stroke-width: 1.2; }
-.ldot { background: var(--jade) !important; border-radius: 1px !important; width: 8px; height: 8px; transform: rotate(45deg); }
-.ldot:nth-child(2) { background: var(--gold) !important; }
-.ldot:nth-child(3) { background: var(--seal) !important; }
+.loading-screen .ic { color: var(--clay); width: 46px; height: 46px; stroke-width: 1.2; }
+.ldot { background: var(--clay) !important; border-radius: 50% !important; width: 8px; height: 8px; }
+.ldot:nth-child(2) { background: var(--ochre) !important; }
+.ldot:nth-child(3) { background: var(--sage) !important; }
 
 /* ══════════════════ 结果页 ══════════════════ */
-.result-hero { padding: 1.9rem 1.5rem .8rem; }
+.result-hero { padding: 1.85rem 1.5rem .6rem; }
 .r-badge {
-  border-radius: 3px !important; font-size: 11px; letter-spacing: .1em;
-  border: 1px solid currentColor; padding: 4px 12px; gap: 6px;
+  border-radius: 99px !important; font-size: 11px; letter-spacing: .08em;
+  padding: 5px 13px; gap: 6px;
 }
 .r-badge .ic { width: 13px; height: 13px; }
-.r-title { font-size: 28px; font-weight: 700; letter-spacing: .12em; color: var(--jade-deep) !important; }
+.r-title { font-size: 28px; font-weight: 700; letter-spacing: .1em; color: var(--clay-deep) !important; }
 .r-sub { font-size: 13px; line-height: 1.8; color: var(--ink-2) !important; }
 
-/* ── 半环仪表盘（替代原版整圆环）── */
-.score-ring-wrap { margin: 1.1rem 0 .5rem; }
+/* ── 半环仪表盘 ── */
+.score-ring-wrap { margin: 1rem 0 .35rem; }
 .score-ring { width: 250px; height: 152px; position: relative; }
-.score-ring svg { width: 100%; height: 100%; transform: none; overflow: visible; }
+/* ★ 必须覆盖原版 .score-ring svg{transform:rotate(-90deg)}，否则半环会被转成竖的 */
+.score-ring svg { width: 100%; height: 100%; overflow: visible; transform: none !important; }
 .gauge-arc-bg { fill: none; stroke: var(--paper-2); stroke-width: 13; stroke-linecap: butt; }
-.gauge-arc-fg { fill: none; stroke: var(--jade); stroke-width: 13; stroke-linecap: butt; }
+.gauge-arc-fg { fill: none; stroke: var(--clay); stroke-width: 13; stroke-linecap: butt; }
 .gauge-tick { stroke: var(--line-2); stroke-width: 1.2; }
 .gauge-tick-major { stroke: var(--ink-3); stroke-width: 1.6; }
 .gauge-tick-lbl { fill: var(--ink-3); font-size: 9px; font-family: Georgia, serif; text-anchor: middle; }
-.gauge-needle { stroke: var(--seal); stroke-width: 2; stroke-linecap: round; }
-.gauge-hub { fill: var(--card); stroke: var(--seal); stroke-width: 2; }
 .gauge-band { opacity: .9; }
 .score-center { top: auto; bottom: 6px; left: 50%; transform: translateX(-50%); }
-.score-num { font-family: Georgia, serif; font-size: 46px; font-weight: 700; color: var(--jade-deep) !important; line-height: 1; letter-spacing: -.02em; }
+.score-num {
+  font-family: Georgia, serif; font-size: 46px; font-weight: 700;
+  color: var(--clay-deep) !important; line-height: 1; letter-spacing: -.02em;
+}
 .score-num .score-unit { font-size: 14px; color: var(--ink-3); font-weight: 400; margin-left: 2px; }
-.score-lbl { font-size: 10px; color: var(--ink-3) !important; letter-spacing: .2em; margin-top: 2px; }
-.gauge-title { font-size: 12px; color: var(--ink-2); letter-spacing: .14em; margin-top: .1rem; }
+.score-lbl { font-size: 10px; color: var(--ink-3) !important; letter-spacing: .18em; margin-top: 2px; }
+.gauge-title { font-size: 12px; color: var(--ink-2); letter-spacing: .1em; margin-top: .1rem; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.gauge-title .ic { width: 13px; height: 13px; color: var(--ochre); }
 
-/* ── 五档刻度尺 ── */
-.tier-ruler { margin: .55rem 1.35rem 1.1rem; }
-.tier-ruler-track { display: flex; height: 7px; border: 1px solid var(--line-2); border-radius: 2px; overflow: hidden; }
-.tier-ruler-seg { flex: 1; opacity: .42; }
-.tier-ruler-seg.on { opacity: 1; box-shadow: inset 0 0 0 1px rgba(255,255,255,.55); }
-.tier-ruler-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--ink-3); margin-top: 4px; font-family: Georgia, serif; }
+/* ══════════ 五档档位条（滑块式，强化当前档辨识度）══════════ */
+.ruler {
+  margin: .9rem 1.15rem 1.15rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: .85rem .95rem .7rem;
+  box-shadow: 0 2px 8px rgba(122,90,60,.06);
+}
+.ruler-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: .6rem;
+}
+.ruler-current {
+  font-size: 17px; font-weight: 700; letter-spacing: .06em;
+  display: flex; align-items: center; gap: 7px;
+}
+.ruler-current .dot {
+  width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+  box-shadow: 0 0 0 3px currentColor; opacity: 1;
+}
+.ruler-current .dot span { display: block; width: 9px; height: 9px; border-radius: 50%; background: currentColor; }
+.ruler-current .no { font-family: Georgia, serif; font-size: 11px; opacity: .6; font-weight: 600; }
+.ruler-score { font-family: Georgia, serif; font-size: 13px; color: var(--ink-3); }
+.ruler-score b { font-size: 19px; color: var(--clay-deep); font-weight: 700; }
+
+/* 长条轨道 */
+.ruler-track {
+  position: relative; height: 18px; border-radius: 99px;
+  background: var(--paper-2);
+  overflow: visible;
+}
+.ruler-seg {
+  position: absolute; top: 0; bottom: 0;
+  opacity: .38; transition: opacity .35s ease;
+}
+.ruler-seg:first-child { border-radius: 99px 0 0 99px; }
+.ruler-seg:last-child { border-radius: 0 99px 99px 0; }
+.ruler-seg.on { opacity: 1; }
+.ruler-seg.on::after {
+  content: ''; position: absolute; inset: 0;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.4);
+  border-radius: inherit;
+}
+
+/* 滑块 */
+.ruler-thumb {
+  position: absolute; top: 50%; width: 22px; height: 22px;
+  border-radius: 50%; background: #FFFDF8;
+  border: 3px solid var(--clay);
+  box-shadow: 0 2px 6px rgba(122,90,60,.3);
+  transform: translate(-50%, -50%);
+  transition: left .5s cubic-bezier(.34,1.3,.64,1);
+  z-index: 2;
+}
+/* 刻度标签 */
+.ruler-labels {
+  display: flex; margin-top: .55rem;
+  font-size: 10px; color: var(--ink-3); letter-spacing: .02em;
+}
+.ruler-labels span {
+  flex: 1; text-align: center; transition: color .3s, font-weight .3s;
+  white-space: nowrap;
+}
+.ruler-labels span.on { color: var(--clay-deep); font-weight: 700; }
 
 /* ── 九轴雷达图 ── */
 .radar-card {
   background: var(--card) !important; border: 1px solid var(--line) !important;
-  border-radius: 4px !important; margin: 0 1rem .8rem; padding: .9rem 1rem 1rem;
+  border-radius: 14px !important; margin: 0 1rem .8rem; padding: .9rem 1rem 1rem;
+  box-shadow: 0 2px 8px rgba(122,90,60,.05);
 }
 .radar-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: .2rem; }
-.radar-title { font-size: 15px; font-weight: 700; color: var(--jade-deep); letter-spacing: .1em; display: flex; align-items: center; gap: 7px; }
-.radar-title .ic { width: 15px; height: 15px; color: var(--gold); }
-.radar-sub { font-size: 10px; color: var(--ink-3); letter-spacing: .06em; }
+.radar-title { font-size: 15px; font-weight: 700; color: var(--clay-deep); letter-spacing: .08em; display: flex; align-items: center; gap: 7px; }
+.radar-title .ic { width: 15px; height: 15px; color: var(--ochre); }
+.radar-sub { font-size: 10px; color: var(--ink-3); letter-spacing: .04em; }
 .radar-svg { display: block; width: 100%; max-width: 310px; height: auto; margin: .1rem auto .2rem; overflow: visible; }
 .radar-web { fill: none; stroke: var(--line); stroke-width: 1; }
 .radar-web.outer { stroke: var(--line-2); stroke-width: 1.2; }
 .radar-spoke { stroke: var(--line); stroke-width: 1; }
-.radar-shape { fill: rgba(31,111,99,.16); stroke: var(--jade); stroke-width: 2; stroke-linejoin: round; }
-.radar-dot { fill: var(--card); stroke: var(--jade); stroke-width: 1.8; }
+.radar-shape { fill: rgba(188,111,92,.15); stroke: var(--clay); stroke-width: 2; stroke-linejoin: round; }
+.radar-dot { fill: var(--card); stroke: var(--clay); stroke-width: 1.8; }
 .radar-lbl { fill: var(--ink-2); font-size: 10px; font-family: "Songti SC","STSong",serif; }
 .radar-legend { display: flex; gap: 12px; justify-content: center; font-size: 10px; color: var(--ink-3); margin-top: .1rem; }
-.radar-legend i { display: inline-block; width: 9px; height: 9px; vertical-align: -1px; margin-right: 4px; }
+.radar-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; vertical-align: -1px; margin-right: 4px; }
 
-/* ── 九维横条榜（替代原版 2 列九宫格，保留 .dim-card ×9）── */
+/* ── 九维横条榜 ── */
 .dim-grid { display: block !important; padding: 0 1rem !important; margin-bottom: .9rem; }
 .dim-card {
   background: var(--card) !important; border: 1px solid var(--line) !important;
   border-bottom: none !important; border-radius: 0 !important;
-  padding: .48rem .7rem !important; display: grid !important;
+  padding: .5rem .75rem !important; display: grid !important;
   grid-template-columns: 78px 1fr 58px; align-items: center; gap: 7px;
 }
-.dim-card:first-child { border-radius: 4px 4px 0 0 !important; }
-.dim-card:last-child { border-bottom: 1px solid var(--line) !important; border-radius: 0 0 4px 4px !important; }
+.dim-card:first-child { border-radius: 12px 12px 0 0 !important; }
+.dim-card:last-child { border-bottom: 1px solid var(--line) !important; border-radius: 0 0 12px 12px !important; }
 .dim-name { font-size: 11px !important; color: var(--ink-2) !important; margin: 0 !important; white-space: nowrap; }
 .dim-val { grid-column: 3; grid-row: 1; font-size: 14px !important; font-family: Georgia, serif; text-align: right; white-space: nowrap; }
 .dim-val span { font-size: 9px !important; margin-left: 1px; }
-.dim-bar-wrap { grid-column: 2; grid-row: 1; height: 5px !important; margin: 0 !important; background: var(--paper-2) !important; border-radius: 0 !important; overflow: visible !important; }
-.dim-bar { height: 100% !important; border-radius: 0 !important; }
-.dim-card::before { content: ''; }
+.dim-bar-wrap { grid-column: 2; grid-row: 1; height: 6px !important; margin: 0 !important; background: var(--paper-2) !important; border-radius: 99px !important; overflow: hidden !important; }
+.dim-bar { height: 100% !important; border-radius: 99px !important; }
 
-/* ── 章节分隔：编号 + 双细线 ── */
+/* ── 章节分隔 ── */
 .sec-div { gap: 10px; padding: .9rem 1rem .6rem; }
 .sec-div-line { height: 1px; background: var(--line) !important; }
 .sec-div-line:first-child { flex: 0 0 18px; }
 .sec-div-txt {
-  font-size: 13px !important; color: var(--jade-deep) !important;
-  letter-spacing: .14em; font-weight: 700; display: flex; align-items: center; gap: 7px;
+  font-size: 13px !important; color: var(--clay-deep) !important;
+  letter-spacing: .1em; font-weight: 700; display: flex; align-items: center; gap: 7px;
 }
-.sec-div-txt .sec-no { font-family: Georgia, serif; color: var(--gold); font-size: 11px; letter-spacing: 0; }
+.sec-div-txt .sec-no { font-family: Georgia, serif; color: var(--ochre); font-size: 11px; letter-spacing: 0; }
 
-/* ── 双画像：上下叠放 + 匹配带（替代并排双卡）── */
+/* ── 双画像 ── */
 .dual-profiles { display: block !important; padding: 0 1rem !important; margin-bottom: .8rem; }
 .profile-card {
   background: var(--card) !important; border: 1px solid var(--line) !important;
-  border-radius: 4px !important; margin-bottom: .55rem;
+  border-radius: 12px !important; margin-bottom: .55rem; overflow: hidden;
+  box-shadow: 0 1px 3px rgba(122,90,60,.04);
 }
 .profile-head {
   padding: .55rem .8rem !important; border-bottom: 1px solid var(--line) !important;
-  display: flex; align-items: center; gap: 9px;
+  display: flex; align-items: center; gap: 9px; background: rgba(247,228,220,.35);
 }
 .profile-head-label {
-  border-radius: 2px !important; font-size: 10px !important; letter-spacing: .08em;
-  padding: 3px 9px !important; margin: 0 !important; border: 1px solid currentColor;
+  border-radius: 99px !important; font-size: 10px !important; letter-spacing: .06em;
+  padding: 3px 10px !important; margin: 0 !important;
 }
-.profile-head-title { font-size: 13px !important; letter-spacing: .06em; color: var(--ink-2) !important; display: flex; align-items: center; gap: 6px; }
-.profile-head-title .ic { width: 14px; height: 14px; color: var(--jade); }
+.profile-head-title { font-size: 13px !important; letter-spacing: .04em; color: var(--ink-2) !important; display: flex; align-items: center; gap: 6px; }
+.profile-head-title .ic { width: 14px; height: 14px; color: var(--clay); }
 .profile-rows { display: grid; grid-template-columns: 1fr 1fr; }
 .profile-row {
-  padding: .42rem .8rem !important; border-bottom: 1px solid var(--line) !important;
-  border-right: 1px solid var(--line); display: block;
+  padding: .45rem .8rem !important; border-bottom: 1px solid var(--line) !important;
+  border-right: 1px solid var(--line);
 }
 .profile-row:nth-child(2n) { border-right: none; }
 .profile-row:nth-last-child(-n+2) { border-bottom: none !important; }
-/* 9 行为奇数：让最后一行跨满两列，避免出现空白半格 */
+/* 9 行为奇数：末行跨满两列，避免空白半格 */
 .profile-row:last-child:nth-child(odd) {
   grid-column: 1 / -1; border-right: none; border-bottom: none !important;
-  background: rgba(31,111,99,.035);
+  background: rgba(188,111,92,.035);
 }
-.profile-key { font-size: 9px !important; color: var(--ink-3) !important; letter-spacing: .06em; margin-bottom: 2px !important; }
+.profile-key { font-size: 9px !important; color: var(--ink-3) !important; letter-spacing: .05em; margin-bottom: 2px !important; }
 .profile-val { font-size: 11px !important; line-height: 1.45 !important; color: var(--ink) !important; }
 
 /* 匹配带 */
 .match-band {
   background: var(--card) !important; border: 1px solid var(--line) !important;
-  border-left: 3px solid var(--gold) !important;
-  border-radius: 3px !important; margin: 0 1rem .8rem; padding: .65rem .85rem;
+  border-left: 3px solid var(--ochre) !important;
+  border-radius: 10px !important; margin: 0 1rem .8rem; padding: .65rem .85rem;
 }
-.band-title { font-size: 12px; color: var(--jade-deep); letter-spacing: .1em; display: flex; align-items: center; gap: 6px; margin-bottom: .35rem; }
-.band-title .ic { width: 13px; height: 13px; color: var(--gold); }
-.band-track { height: 8px; border-radius: 2px; border: 1px solid var(--line-2); background: linear-gradient(90deg, var(--lv5s), var(--lv4s) 30%, var(--lv3s) 52%, var(--lv2s) 75%, var(--lv1s)); position: relative; }
+.band-title { font-size: 12px; color: var(--clay-deep); letter-spacing: .08em; display: flex; align-items: center; gap: 6px; margin-bottom: .35rem; }
+.band-title .ic { width: 13px; height: 13px; color: var(--ochre); }
+.band-track {
+  height: 8px; border-radius: 99px; border: 1px solid var(--line-2);
+  background: linear-gradient(90deg, var(--lv5s), var(--lv4s) 30%, var(--lv3s) 52%, var(--lv2s) 75%, var(--lv1s));
+  position: relative;
+}
 .band-track::after {
   content: ''; position: absolute; top: -4px; bottom: -4px; width: 2px;
-  left: var(--band-pos, 60%); background: var(--seal);
+  left: var(--band-pos, 60%); background: var(--seal); border-radius: 2px;
 }
 .band-scale { display: flex; justify-content: space-between; font-size: 9px; color: var(--ink-3); margin-top: 4px; font-family: Georgia, serif; }
 
 /* ── 内容卡片 ── */
 .a-card {
   background: var(--card) !important; border: 1px solid var(--line) !important;
-  border-radius: 4px !important; padding: .9rem 1rem !important; margin: 0 1rem .75rem !important;
+  border-radius: 14px !important; padding: .9rem 1rem !important; margin: 0 1rem .75rem !important;
+  box-shadow: 0 1px 3px rgba(122,90,60,.04);
 }
 .a-card h3 {
-  font-size: 15px !important; color: var(--jade-deep) !important; letter-spacing: .08em;
+  font-size: 15px !important; color: var(--clay-deep) !important; letter-spacing: .06em;
   display: flex; align-items: center; gap: 8px; margin-bottom: .65rem !important;
   padding-bottom: .5rem; border-bottom: 1px solid var(--line);
 }
-.a-card h3 .ic { width: 15px; height: 15px; color: var(--gold); }
-.a-card h3 .h3-no { font-family: Georgia, serif; font-size: 11px; color: var(--gold); margin-left: auto; letter-spacing: 0; }
+.a-card h3 .ic { width: 15px; height: 15px; color: var(--ochre); }
+.a-card h3 .h3-no { font-family: Georgia, serif; font-size: 11px; color: var(--ochre); margin-left: auto; letter-spacing: 0; }
 .a-card p { font-size: 13px !important; color: var(--ink-2) !important; line-height: 1.85 !important; }
-.a-card p strong { color: var(--jade-deep) !important; }
+.a-card p strong { color: var(--clay-deep) !important; }
 
-/* ── 维度分析：编号徽章替代左竖条 ── */
-.analysis-item { gap: 10px !important; padding: .5rem 0 !important; border-bottom: 1px dashed var(--line) !important; align-items: flex-start !important; }
+/* ── 维度分析 ── */
+.analysis-item { gap: 10px !important; padding: .55rem 0 !important; border-bottom: 1px dashed var(--line) !important; align-items: flex-start !important; }
 .analysis-bar {
   width: 22px !important; height: 22px !important; min-height: 0 !important;
-  border-radius: 2px !important; flex-shrink: 0; margin-top: 1px !important;
+  border-radius: 7px !important; flex-shrink: 0; margin-top: 1px !important;
   display: flex; align-items: center; justify-content: center;
-  color: #FFFDF8; font-family: Georgia, serif; font-size: 10px; font-weight: 700;
+  color: #FFFBF6; font-family: Georgia, serif; font-size: 10px; font-weight: 700;
 }
-.analysis-dim { font-size: 12px !important; color: var(--jade-deep) !important; letter-spacing: .04em; }
-.analysis-txt { font-size: 12px !important; color: var(--ink-2) !important; line-height: 1.7 !important; }
+.analysis-dim { font-size: 12px !important; color: var(--clay-deep) !important; letter-spacing: .03em; }
+.analysis-txt { font-size: 12.5px !important; color: var(--ink-2) !important; line-height: 1.75 !important; }
 
-/* ── 建议：序号 + 引导线 ── */
+/* ── 建议 ── */
 .adv-list li {
   font-size: 13px !important; color: var(--ink-2) !important; line-height: 1.75 !important;
-  padding: .42rem 0 !important; gap: 10px !important;
+  padding: .45rem 0 !important; gap: 10px !important;
   border-bottom: 1px dashed var(--line);
 }
 .adv-list li:last-child { border-bottom: none; }
 .adv-dot {
-  width: 20px !important; height: 20px !important; border-radius: 2px !important;
+  width: 20px !important; height: 20px !important; border-radius: 6px !important;
   margin: 2px 0 0 !important; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  color: #FFFDF8; font-family: Georgia, serif; font-size: 10px; font-weight: 700;
+  color: #FFFBF6; font-family: Georgia, serif; font-size: 10px; font-weight: 700;
 }
 
 /* ── 底部按钮 ── */
 .share-btn {
   display: flex !important; align-items: center; justify-content: center; gap: 8px;
-  margin: 1.15rem auto .3rem !important; padding: .72rem 1.7rem !important;
-  border: 1px solid var(--jade-deep) !important; background: var(--jade-deep) !important;
-  color: #FFFDF8 !important; font-size: 14px !important; font-weight: 600;
-  border-radius: 4px !important; letter-spacing: .08em;
-  box-shadow: 3px 3px 0 rgba(176,132,50,.3);
+  margin: 1.15rem auto .3rem !important; padding: .75rem 1.7rem !important;
+  border: 1px solid var(--clay-deep) !important; background: var(--clay-deep) !important;
+  color: #FFFBF6 !important; font-size: 14px !important; font-weight: 600;
+  border-radius: 99px !important; letter-spacing: .06em;
+  box-shadow: 0 5px 14px rgba(154,84,67,.26);
 }
-.share-btn .ic { width: 16px; height: 16px; color: var(--gold-soft); }
-.share-btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 rgba(176,132,50,.3); opacity: 1; }
-.restart-btn { color: var(--ink-3) !important; font-size: 12px !important; letter-spacing: .06em; display: flex; align-items: center; gap: 6px; margin: .5rem auto; justify-content: center; }
+.share-btn .ic { width: 16px; height: 16px; color: #F7E4DC; }
+.share-btn:active { transform: translateY(1px); box-shadow: 0 2px 7px rgba(154,84,67,.2); opacity: 1; }
+.restart-btn { color: var(--ink-3) !important; font-size: 12px !important; letter-spacing: .04em; display: flex; align-items: center; gap: 6px; margin: .5rem auto; justify-content: center; }
 .restart-btn .ic { width: 12px; height: 12px; }
 
 /* ── 分享弹层 ── */
-.share-overlay { background: rgba(24,44,42,.76) !important; }
-.share-modal { background: var(--card) !important; border-radius: 5px !important; border: 1px solid var(--line-2); box-shadow: 0 20px 60px rgba(20,40,38,.4); }
-.share-img { border-radius: 2px !important; }
+.share-overlay { background: rgba(58,42,32,.72) !important; }
+.share-modal { background: var(--card) !important; border-radius: 16px !important; box-shadow: 0 20px 60px rgba(58,42,32,.38); }
+.share-img { border-radius: 10px !important; }
 .share-tip { color: var(--ink-3) !important; font-size: 11px !important; }
-.share-btns button { border-radius: 4px !important; font-size: 13px !important; }
+.share-btns button { border-radius: 99px !important; font-size: 13px !important; }
 .share-btn-close { background: var(--paper-2) !important; color: var(--ink-2) !important; }
-.share-btn-save { background: var(--jade-deep) !important; color: #FFFDF8 !important; }
-#toast { background: rgba(20,80,74,.94) !important; border-radius: 3px !important; }
+.share-btn-save { background: var(--clay-deep) !important; color: #FFFBF6 !important; }
+#toast { background: rgba(154,84,67,.95) !important; border-radius: 99px !important; }
 
 /* 小屏适配 */
 @media (max-width: 360px) {
-  .dual-profiles { grid-template-columns: 1fr; }
-  .dim-grid { grid-template-columns: 1fr; }
   .profile-rows { grid-template-columns: 1fr; }
   .profile-row:nth-child(2n) { border-right: none; }
   .profile-row:nth-last-child(-n+2) { border-bottom: 1px solid var(--line) !important; }
   .profile-row:last-child { border-bottom: none !important; }
   .score-ring { width: 220px; height: 138px; }
+  .ruler-labels { font-size: 9px; }
 }
 
   </style>
@@ -3418,29 +3477,38 @@ function ic(name, cls) {
 
 /* ── 展示层配色重映射：引擎原色 → 墨青纸本色 ── */
 const TONE_MAP = {
-  '#D4537E': '#1F6F63', '#7F77DD': '#3B6B82', '#1D9E75': '#1F6F63',
-  '#BA7517': '#B08432', '#D85A30': '#A8443C', '#534AB7': '#14504A',
-  '#3C3489': '#14504A', '#633806': '#9B6B43', '#993556': '#14504A',
-  '#FBEAF0': '#DEEBE6', '#EEEDFE': '#DDE9EE', '#FAEEDA': '#F0E4D6',
-  '#E1F5EE': '#DEEBE6', '#FAECE7': '#F6E5E1', '#ED93B1': '#7FA79E',
-  '#9FE1CB': '#A9C9BE', '#085041': '#14504A', '#f0ede8': '#EAE4D6',
-  '#f3dfe6': '#DCD5C4', '#8a8a8a': '#83918C', '#9a9a9a': '#83918C'
+  '#D4537E': '#BC6F5C', '#7F77DD': '#5E85A0', '#1D9E75': '#BC6F5C',
+  '#BA7517': '#C08A3E', '#D85A30': '#A2988A', '#534AB7': '#9A5443',
+  '#3C3489': '#9A5443', '#633806': '#A87450', '#993556': '#9A5443',
+  '#FBEAF0': '#F7E4DC', '#EEEDFE': '#E3ECF2', '#FAEEDA': '#F5E8D9',
+  '#E1F5EE': '#F7E4DC', '#FAECE7': '#F0EBE4', '#ED93B1': '#7FA79E',
+  '#9FE1CB': '#A9C9BE', '#085041': '#9A5443', '#f0ede8': '#F2E8DA',
+  '#f3dfe6': '#EADCC9', '#8a8a8a': '#9C8B7D', '#9a9a9a': '#9C8B7D'
 };
 function tone(hex) {
-  if (!hex) return '#1F6F63';
+  if (!hex) return '#BC6F5C';
   const k = String(hex).trim();
   return TONE_MAP[k] || TONE_MAP[k.toLowerCase()] || k;
 }
 
-/* ── 五档视觉（按 tier().title 映射，不重复阈值逻辑）── */
+/* ── 五档视觉（按 tier().title 映射，不重复阈值逻辑）
+   色相刻意拉开：藕紫 / 陶土玫瑰 / 雾蓝 / 赭金 / 灰褐，确保一眼分得清 ── */
 const TIER_STYLE = {
-  '顶流香饽饽':   { c:'#B08432', bg:'#F4E9CD', icon:'crown',   no:'Ⅰ' },
-  '优质潜力股':   { c:'#1F6F63', bg:'#DEEBE6', icon:'star',    no:'Ⅱ' },
-  '稳健中坚力量': { c:'#3B6B82', bg:'#DDE9EE', icon:'shield',  no:'Ⅲ' },
-  '努力中的普通玩家': { c:'#9B6B43', bg:'#F0E4D6', icon:'sprout', no:'Ⅳ' },
-  '亟需重新定位': { c:'#A8443C', bg:'#F6E5E1', icon:'refresh', no:'Ⅴ' }
+  '顶流香饽饽':       { c:'#7D5A6E', bg:'#F0E5EC', icon:'crown',   no:'Ⅰ' },
+  '优质潜力股':       { c:'#BC6F5C', bg:'#F7E4DC', icon:'star',    no:'Ⅱ' },
+  '稳健中坚力量':     { c:'#5E85A0', bg:'#E3ECF2', icon:'shield',  no:'Ⅲ' },
+  '努力中的普通玩家': { c:'#C08A3E', bg:'#F8EED9', icon:'sprout',  no:'Ⅳ' },
+  '亟需重新定位':     { c:'#A2988A', bg:'#F0EBE4', icon:'refresh', no:'Ⅴ' }
 };
 const TIER_ORDER = ['亟需重新定位','努力中的普通玩家','稳健中坚力量','优质潜力股','顶流香饽饽'];
+/* 五档真实分区间（与原版阈值一致，仅用于绘制刻度位置） */
+const TIER_RANGE = [
+  { from:0,  to:45  },
+  { from:45, to:60  },
+  { from:60, to:75  },
+  { from:75, to:88  },
+  { from:88, to:100 }
+];
 function tierStyle(title) { return TIER_STYLE[title] || TIER_STYLE['稳健中坚力量']; }
 
 /* ── 九维短名（雷达图轴标签）── */
@@ -3467,7 +3535,7 @@ function gaugeSVG(total, color) {
     }
   }
   // 五档色带（0-45 / 45-60 / 60-75 / 75-88 / 88-100）
-  const segs = [[0,45,'#A8443C'],[45,60,'#9B6B43'],[60,75,'#3B6B82'],[75,88,'#1F6F63'],[88,100,'#B08432']];
+  const segs = [[0,45,'#A2988A'],[45,60,'#A87450'],[60,75,'#5E85A0'],[75,88,'#BC6F5C'],[88,100,'#C08A3E']];
   let bands = '';
   segs.forEach(function (s) {
     const a0 = Math.PI - (s[0]/100)*Math.PI, a1 = Math.PI - (s[1]/100)*Math.PI;
@@ -3489,14 +3557,39 @@ function gaugeSVG(total, color) {
     '</svg>';
 }
 
-/* ══════════════════ 图表 2：五档刻度尺 ══════════════════ */
-function tierRuler(title) {
-  const cols = ['#A8443C','#9B6B43','#3B6B82','#1F6F63','#B08432'];
-  const idx = TIER_ORDER.indexOf(title);
+/* ══════════════════ 图表 2：五档档位条（滑动长条版）══════════════════
+   强化点：色相拉开 + 当前档整段高亮 + 圆形滑块定位 + 档位名放大置顶 ── */
+function tierRuler(title, total) {
+  const idx = Math.max(0, TIER_ORDER.indexOf(title));
+  const cols = TIER_ORDER.map(function (t) { return TIER_STYLE[t].c; });
+  const cur = cols[idx];
+  const shortTxt = ['重新定位', '普通', '中坚', '优质', '顶流'];
+
   let seg = '';
-  for (let i = 0; i < 5; i++) seg += '<div class="tier-ruler-seg' + (i === idx ? ' on' : '') + '" style="background:' + cols[i] + '"></div>';
-  return '<div class="tier-ruler"><div class="tier-ruler-track">' + seg + '</div>' +
-    '<div class="tier-ruler-labels"><span>重新定位</span><span>普通</span><span>中坚</span><span>优质</span><span>顶流</span></div></div>';
+  TIER_RANGE.forEach(function (r, i) {
+    seg += '<div class="ruler-seg' + (i === idx ? ' on' : '') + '" style="left:' + r.from +
+      '%;width:' + (r.to - r.from) + '%;background:' + cols[i] + '"></div>';
+  });
+
+  const pos = Math.max(2, Math.min(98, total));
+  const thumb = '<div class="ruler-thumb" style="left:' + pos + '%;border-color:' + cur + '"></div>';
+
+  let labels = '';
+  shortTxt.forEach(function (t, i) {
+    labels += '<span class="' + (i === idx ? 'on' : '') + '">' + t + '</span>';
+  });
+
+  return '<div class="ruler">' +
+    '<div class="ruler-head">' +
+      '<div class="ruler-current" style="color:' + cur + '">' +
+        '<span class="dot"><span></span></span>' + title +
+        '<span class="no">' + TIER_STYLE[title].no + '</span>' +
+      '</div>' +
+      '<div class="ruler-score">综合 <b>' + total + '</b> 分</div>' +
+    '</div>' +
+    '<div class="ruler-track">' + seg + thumb + '</div>' +
+    '<div class="ruler-labels">' + labels + '</div>' +
+  '</div>';
 }
 
 /* ══════════════════ 图表 3：九轴雷达图 ══════════════════ */
@@ -3953,7 +4046,12 @@ function genProfiles(total, g) {
   return { ideal, base };
 }
 
-// ─── genAnalysis ──────────────────────────────────────────────────────────────
+// ─── genAnalysis（文案二创版）────────────────────────────────────────────────
+// ★ 只改文字，不改任何数值/阈值/颜色字段结构。
+// ★ 与 score() 完全解耦：score 不调用本函数（已核验），故分数与分布不受影响。
+// ★ 改写取向：保留「相亲市场」框架，但把「招聘式评价」换成
+//   「市场现实 + 心理学视角 + 一个能做的具体动作」，不评判、不说教、不诊断。
+//   素材取向参考：依恋与自我价值、课题分离、边界感、亲密关系中的真实与坦诚。
 function genAnalysis(dims) {
   const dn = { age: '年龄', location: '城市户籍', edu: '学历职业', econ: '个人经济', fasset: '家庭资产', fstruct: '家庭结构', appear: '外貌形象', pers: '性格特质', emo: '情感态度' };
   const g = state.gender;
@@ -3963,117 +4061,118 @@ function genAnalysis(dims) {
   // 年龄
   const age = dims.age;
   if (g === 'female') {
-    if (age >= 88)  items.push({ dim: dn.age, color: '#1D9E75', text: '年龄处于黄金区间，相亲市场最受欢迎的阶段，主动权充足。' });
-    else if (age >= 65) items.push({ dim: dn.age, color: '#BA7517', text: '年龄尚可但开始受到关注，建议把握好这段时间窗口期。' });
-    else             items.push({ dim: dn.age, color: '#D85A30', text: '年龄在传统相亲市场略有压力，但真正在乎你的人不在乎这个数字。' });
+    if (age >= 88)  items.push({ dim: dn.age, color: '#1D9E75', text: '这个年龄确实握着主动权，市场对你很客气。但选择权越大，越容易把「条件清单」当成安全感——记得给「相处舒服」留一个位置，它不在清单上，却决定你能走多远。' });
+    else if (age >= 65) items.push({ dim: dn.age, color: '#BA7517', text: '市场还愿意给你时间，只是催促声会一年比一年响。别在焦虑里做决定——被催着选的人，往往要用好几年去消化那个选择。' });
+    else             items.push({ dim: dn.age, color: '#D85A30', text: '传统市场会拿年龄压你，这是真的。但「过了年纪」是市场话术，不是对你这个人的判决。真正在乎你的人，先在乎的是你是谁。' });
   } else {
-    if (age >= 85)  items.push({ dim: dn.age, color: '#1D9E75', text: '年龄段处于相亲市场男性吸引力峰值区间，事业起步期最具成长性。' });
-    else if (age >= 65) items.push({ dim: dn.age, color: '#BA7517', text: '年龄偏大在部分场合会被催促，但稳重成熟也是加分项。' });
-    else             items.push({ dim: dn.age, color: '#D85A30', text: '年龄偏大在相亲市场有一定劣势，建议精准匹配、提高效率。' });
+    if (age >= 85)  items.push({ dim: dn.age, color: '#1D9E75', text: '这个年龄段正撞在男性吸引力的峰值上，事业也刚往上走，成长性还没兑现完。别急着证明什么，稳着来反而是优势。' });
+    else if (age >= 65) items.push({ dim: dn.age, color: '#BA7517', text: '会被催，但成熟稳健本身就是加分项。真正的短板往往不是年龄，而是「除了年龄，没什么可讲」——把生活讲得有意思，比报年龄有用。' });
+    else             items.push({ dim: dn.age, color: '#D85A30', text: '年龄在传统市场确实吃亏，那就不必在人海里硬拼。精准匹配、少而准，比广撒网省力得多，也更像成年人的做法。' });
   }
 
   // 城市户籍
   const loc = dims.location;
-  if (loc >= 75)      items.push({ dim: dn.location, color: '#1D9E75', text: '城市+户籍组合优秀，是大多数人愿意重点考虑的稳定因素。' });
-  else if (loc >= 50) items.push({ dim: dn.location, color: '#BA7517', text: '城市条件中等，不是明显劣势，但可通过其他维度做补充。' });
-  else                items.push({ dim: dn.location, color: '#D85A30', text: '城市或户籍方面在高要求对象眼中有一定局限，建议拓展圈子。' });
+  if (loc >= 75)      items.push({ dim: dn.location, color: '#1D9E75', text: '城市加户籍是硬通货，很多人专门盯这一项。它给你的不是优越感，是「被认真考虑」的资格——别把这份资格浪费在不对的人身上。' });
+  else if (loc >= 50) items.push({ dim: dn.location, color: '#BA7517', text: '城市条件不拖后腿，也不额外加分。这个位置上拼的是「生活感」：你愿不愿意为对方挪一步、能不能一起把日子规划清楚。' });
+  else                items.push({ dim: dn.location, color: '#D85A30', text: '城市户籍在挑剔的人眼里是道门槛，这是现实。但门槛筛掉的恰恰是「只看条件的人」——换个圈子，你别的优点才有机会被看见。' });
 
   // 学历职业
   const edu = dims.edu;
   const jobLabels = { pub: '体制内', fin: '金融/投行', it: '互联网大厂', 'for': '外资企业', med: '医疗/教育', biz: '普通企业', self: '自由职业' };
-  const jobName = jobLabels[state.job] || '当前职业';
-  if (edu >= 80)      items.push({ dim: dn.edu, color: '#1D9E75', text: `${jobName}是相亲市场公认的优质赛道，学历职业组合出色，硬条件亮眼。` });
-  else if (edu >= 60) items.push({ dim: dn.edu, color: '#BA7517', text: `${jobName}属于中等职业，可重点展示工作稳定性和晋升空间。` });
-  else                items.push({ dim: dn.edu, color: '#D85A30', text: `学历职业组合在竞争激烈的场合稍显弱势，但能力和成长性同样重要。` });
+  const jobName = jobLabels[state.job] || '你现在的职业';
+  if (edu >= 80)      items.push({ dim: dn.edu, color: '#1D9E75', text: `${jobName}在这个市场里是公认的好牌。好牌的意义不是让你高高在上，而是你有底气去选「聊得来」的人，而不是被条件推着走。` });
+  else if (edu >= 60) items.push({ dim: dn.edu, color: '#BA7517', text: `${jobName}不算亮眼，但胜在稳。相亲里很多人最后选的不是最风光的那个，是最让人安心的那个——把「可靠」讲具体，比讲「前途」管用。` });
+  else                items.push({ dim: dn.edu, color: '#D85A30', text: `学历职业在这类场合容易先被扣分。但别人怎么打分是别人的课题，你能做的是把「我在往上走」讲得有细节，而不是急着辩解。` });
 
   // 个人经济
   const econ = dims.econ;
-  if (econ >= 80)      items.push({ dim: dn.econ, color: '#1D9E75', text: '收入和房产组合优秀，是相亲中最受看重的硬件之一，加分明显。' });
-  else if (econ >= 55) items.push({ dim: dn.econ, color: '#BA7517', text: '经济条件属于中等水平，建议在展示稳定性和发展潜力上发力。' });
-  else                 items.push({ dim: dn.econ, color: '#D85A30', text: '收入或房产方面相对薄弱，是当前最需要补强的硬件维度。' });
+  if (econ >= 80)      items.push({ dim: dn.econ, color: '#1D9E75', text: '收入和房产是你最硬的底气，它让你在关系里有「不将就」的资本。守好这份底气就好，别让它变成「我说了算」——那不叫底气，叫控制。' });
+  else if (econ >= 55) items.push({ dim: dn.econ, color: '#BA7517', text: '经济中等，不算短板也不是王牌。这个位置最该让人看见的是「稳」：有没有储蓄习惯、有没有长期打算，比月薪数字更能让人安心。' });
+  else                 items.push({ dim: dn.econ, color: '#D85A30', text: '经济是眼下最实打实的短板，不用绕。但「现在少」和「一直少」是两件事——让对方看到你的路径，比看到你的存款更重要。' });
 
   // 家庭资产
   const fasset = dims.fasset;
-  if (fasset >= 75)    items.push({ dim: dn.fasset, color: '#1D9E75', text: '家庭资产背景良好，父母保障充分，在婚后生活稳定性上有优势。' });
-  else if (fasset >= 45) items.push({ dim: dn.fasset, color: '#BA7517', text: '家庭条件中等，无明显拖累，建议如实展示，不夸大也不贬低。' });
-  else                 items.push({ dim: dn.fasset, color: '#D85A30', text: '家庭资产背景较弱，建议在相亲中提前与对方坦诚，避免后期误会。' });
+  if (fasset >= 75)    items.push({ dim: dn.fasset, color: '#1D9E75', text: '父母那边能托底，婚后生活的下限被抬高了，这是很实在的优势。只是别让「我家条件好」不知不觉变成关系里的主导权。' });
+  else if (fasset >= 45) items.push({ dim: dn.fasset, color: '#BA7517', text: '家庭条件普通，没有拖累，这已经过了很多人的及格线。如实说就好——夸大和自贬都会在相处里露馅，坦诚反而省事。' });
+  else                 items.push({ dim: dn.fasset, color: '#D85A30', text: '家庭这块确实偏弱。建议早点讲清楚，这不是自我贬低，是筛掉那些接受不了的人——省下的是双方后面互相消耗的时间。' });
 
   // 家庭结构
   const fstruct = dims.fstruct;
-  if (fstruct >= 70)   items.push({ dim: dn.fstruct, color: '#1D9E75', text: '家庭结构简单，赡养压力小，对婚后生活质量是正面保障。' });
-  else if (fstruct >= 45) items.push({ dim: dn.fstruct, color: '#BA7517', text: '家庭结构有一定复杂性，建议提前和意向对象沟通好预期。' });
-  else                 items.push({ dim: dn.fstruct, color: '#D85A30', text: '赡养压力偏重或家庭结构复杂，是需要在相亲中坦诚说明的硬伤。' });
+  if (fstruct >= 70)   items.push({ dim: dn.fstruct, color: '#1D9E75', text: '家里关系简单、赡养压力小，这对婚后生活质量是实打实的加分项。很多人吃过「家庭太复杂」的亏，你在这上面是轻松的。' });
+  else if (fstruct >= 45) items.push({ dim: dn.fstruct, color: '#BA7517', text: '家庭有点复杂，不必藏着。把预期提前说清楚，比婚后再爆雷强得多——愿意一起面对的，才是能一起过日子的人。' });
+  else                 items.push({ dim: dn.fstruct, color: '#D85A30', text: '赡养压力重或家庭关系复杂，这是硬约束，瞒不住也不该瞒。早点摊开，找能一起扛的人，而不是指望对方「以后会懂」。' });
 
   // 外貌形象
   const appear = dims.appear;
-  if (appear >= 75)    items.push({ dim: dn.appear, color: '#1D9E75', text: '外形条件出色，第一印象加分明显，在线下相亲中占据优势。' });
-  else if (appear >= 50) items.push({ dim: dn.appear, color: '#BA7517', text: '外貌中等，形象管理上还有提升空间，精致的整体感比五官更重要。' });
-  else                 items.push({ dim: dn.appear, color: '#D85A30', text: '外貌是较弱项，建议通过形象管理（发型/穿搭/体型）做差异化提升。' });
+  if (appear >= 75)    items.push({ dim: dn.appear, color: '#1D9E75', text: '外形是你的第一印象加分项，线下见面很占便宜。但别只靠这个——第一眼让人想认识你，第二眼才决定要不要继续，后者靠的是别的。' });
+  else if (appear >= 50) items.push({ dim: dn.appear, color: '#BA7517', text: '外貌中等，但「整体感」比五官更能打。发型、穿搭、体态这三件事理顺，印象分能有明显提升，成本还很低。' });
+  else                 items.push({ dim: dn.appear, color: '#D85A30', text: '外貌目前是弱项，可它偏偏是最容易靠后天改的一项。不用动刀，先把发型、衣服合身、体重这三件基础做好，变化会超出你预期。' });
 
   // 性格特质
   const pers = dims.pers;
-  if (pers >= 80)      items.push({ dim: dn.pers, color: '#1D9E75', text: '性格特质优秀，情绪稳定+善于沟通，是长期相处的核心竞争力。' });
-  else if (pers >= 60) items.push({ dim: dn.pers, color: '#BA7517', text: '性格整体良好，局部有提升空间，多练习非暴力沟通会有帮助。' });
-  else                 items.push({ dim: dn.pers, color: '#D85A30', text: '情绪稳定性或沟通方式需要关注，这是长期感情里最容易产生摩擦的维度。' });
+  if (pers >= 80)      items.push({ dim: dn.pers, color: '#1D9E75', text: '情绪稳、会沟通，这是长期关系里最值钱的东西，比任何硬件都难替代。你手里握着的，是别人很难速成的那部分。' });
+  else if (pers >= 60) items.push({ dim: dn.pers, color: '#BA7517', text: '性格整体不错，偶尔在冲突里容易上头。练一句「我现在有点情绪，晚点再说」——这句话能帮你省掉很多场没必要吵赢的架。' });
+  else                 items.push({ dim: dn.pers, color: '#D85A30', text: '情绪稳定性和沟通方式值得留意，这是长期关系里摩擦最多的地方。不是要你改性格，是学会在情绪上来时先停三秒，再开口。' });
 
   // 情感态度
   const emo = dims.emo;
-  if (emo >= 78)       items.push({ dim: dn.emo, color: '#1D9E75', text: '婚育意愿明确、父母开明，情感态度加分，对双方都是利好信号。' });
-  else if (emo >= 55)  items.push({ dim: dn.emo, color: '#BA7517', text: '情感态度中性，建议在相亲前想清楚自己的核心诉求，节省双方时间。' });
-  else                 items.push({ dim: dn.emo, color: '#D85A30', text: '婚育或父母干涉方面存在隐患，建议提前对意向对象说清楚，降低后期风险。' });
+  if (emo >= 78)       items.push({ dim: dn.emo, color: '#1D9E75', text: '婚育想法清楚、父母也开明，这在相亲里是稀缺的「低摩擦」配置。双方都省心，这种省心本身就值钱。' });
+  else if (emo >= 55)  items.push({ dim: dn.emo, color: '#BA7517', text: '态度偏中性，建议先问清楚自己：是想结婚，还是被催得想结婚。这两件事差很远，想明白再出门，能少走很多弯路。' });
+  else                 items.push({ dim: dn.emo, color: '#D85A30', text: '婚育或父母干涉这块有隐患，别拖到关系深了才说。早点摊开是保护对方，也是保护你自己——藏着的东西，最后都要还。' });
 
   return items;
 }
 
-// ─── genAdvice ────────────────────────────────────────────────────────────────
+// ─── genAdvice（文案二创版）──────────────────────────────────────────────────
+// ★ 触发条件与原版完全一致，只改措辞；返回结构 {c, t} 不变。
 function genAdvice(total, dims) {
   const advices = [];
   const g = state.gender;
 
-  // 根据弱项生成针对性建议
   if (dims.econ < 55) {
     if (g === 'female') {
-      advices.push({ c: '#D4537E', t: '经济是当前短板，但女生经济独立在许多圈子里反而加分，展示自我价值感更重要。' });
+      advices.push({ c: '#D4537E', t: '经济不高不是你的短板，反倒可能是护城河。能养活自己的女生，在关系里更敢说「不」——那份底气，比任何条件都吸引人。' });
     } else {
-      advices.push({ c: '#D85A30', t: '收入和资产是男性相亲市场评分中权重最高的维度，建议3年内制定一个明确的增收计划。' });
+      advices.push({ c: '#D85A30', t: '收入确实是最被盯的一项，别躲。但比「现在拿多少」更打动人的是「你在怎么变好」——给对方一个三年内看得见的路径。' });
     }
   }
 
   if (dims.appear < 50) {
-    advices.push({ c: '#7F77DD', t: '外貌维度可以通过后天努力显著提升：发型、穿搭、体型管理三件事做好，印象分提升30%不难。' });
+    advices.push({ c: '#7F77DD', t: '外貌是回报最快的一项。发型、衣服合身、体重，三件基础做好，三个月就能看出差别。先把「干净利落」做到位，比研究整容有用得多。' });
   }
 
   if (dims.fstruct < 50) {
-    advices.push({ c: '#BA7517', t: '家庭结构复杂或赡养压力重，建议在第二次见面时坦诚沟通，避免双方在不了解情况下产生错误期待。' });
+    advices.push({ c: '#BA7517', t: '家庭这块复杂或压力重，别等谈婚论嫁才说。第二次见面就坦诚——不是自曝其短，是筛掉扛不住的人，省下的是双方的时间。' });
   }
 
   if (dims.pers < 60) {
-    advices.push({ c: '#534AB7', t: '情绪管理是长期关系中最关键的能力，推荐尝试正念练习或沟通课程，比提升硬件性价比更高。' });
+    advices.push({ c: '#534AB7', t: '情绪管理是长期关系里回报最高的一笔投资。从很小的地方开始：生气时先不回消息，等十分钟再说话。比学一堆沟通技巧都管用。' });
   }
 
   if (state.kids === 'dink' || state.kids === 'marry') {
-    advices.push({ c: '#1D9E75', t: '你的婚育意愿与传统相亲预期有偏差，建议在初期相亲中主动说清楚，找到真正契合的人。' });
+    advices.push({ c: '#1D9E75', t: '你的婚育想法和传统预期不一样，这不是问题，藏着才是问题。早点说清楚，你要找的是同频的人，不是被你说服的人。' });
   }
 
   if (state.parents === 'heavy' || state.parents === 'control') {
-    advices.push({ c: '#D85A30', t: '父母干涉度较高，建议在相亲前先和父母沟通好边界，否则可能影响你的独立判断。' });
+    advices.push({ c: '#D85A30', t: '父母管得多，先要处理的是你和父母的边界，不是你和对象的关系。边界没立起来，换谁来都会被卷进来。' });
   }
 
   if (state.active === 'passive' || state.active === 'shy') {
-    advices.push({ c: '#D4537E', t: '相亲中被动等待会大幅降低成功率，主动发第一条消息、主动约下一次见面，胜率翻倍。' });
+    advices.push({ c: '#D4537E', t: '被动等待在相亲里几乎等于弃权。不用逼自己变外向，只做一件事：想见就主动约第二次。主动一次，胜过纠结一周。' });
   }
 
   if (total >= 75) {
-    advices.push({ c: '#7F77DD', t: '你的市场定位不错，但高分者常见的陷阱是"总觉得还有更好的"，感情窗口期真实存在，别错过。' });
+    advices.push({ c: '#7F77DD', t: '你条件不错，但条件好的人最容易掉进一个坑——总觉得「还有更好的」。选择多不等于选择对，窗口期是真实存在的。' });
   }
 
   if (advices.length === 0) {
-    advices.push({ c: '#1D9E75', t: '整体条件均衡，建议把精力放在真实交流上，相比条件的精确匹配，相处时的感觉更值得看重。' });
-    advices.push({ c: '#D4537E', t: '相亲不是应聘，别把自己包装成"完美候选人"，展示真实的你才能吸引真正适合你的人。' });
+    advices.push({ c: '#1D9E75', t: '你的条件整体均衡，没有明显硬伤。接下来最该练的不是「更好」，是「更真」——相亲里最打动人的，常常是你不太完美的那部分。' });
+    advices.push({ c: '#D4537E', t: '别把自己包装成「完美候选人」。相亲不是面试，一个敢说「我这个不太行」的人，比一个处处得体的人更容易被记住。' });
   }
 
   return advices;
 }
+
 
 // ─── render（二创皮肤版：墨青纸本）─────────────────────────────────────────
 // ★ 数据全部来自原版引擎：tier / genProfiles / genAnalysis / genAdvice
@@ -4093,8 +4192,8 @@ function render({ total, dims }) {
   // ── 九维横条榜（保留 .dim-card ×9）──
   let dimH = '';
   DIM_ORDER.forEach(function (k) {
-    const v = dims[k], c = tone('#1D9E75');
-    const barColor = v >= 75 ? '#1F6F63' : v >= 55 ? '#B08432' : '#A8443C';
+    const v = dims[k];
+    const barColor = v >= 75 ? '#BC6F5C' : v >= 55 ? '#C08A3E' : '#A2988A';
     dimH += '<div class="dim-card"><div class="dim-name">' + dn[k] + '</div>' +
       '<div class="dim-val" style="color:' + barColor + '">' + v + '<span>分</span></div>' +
       '<div class="dim-bar-wrap"><div class="dim-bar" style="width:' + v + '%;background:' + barColor + '"></div></div></div>';
@@ -4148,20 +4247,20 @@ function render({ total, dims }) {
       '</div></div>' +
       '<div class="gauge-title">' + ic('balance') + ' 你在市场中的位置</div>' +
     '</div>' +
-    tierRuler(t.title) +
+    tierRuler(t.title, total) +
 
     '<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-txt"><span class="sec-no">01</span>九维竞争力</div><div class="sec-div-line"></div></div>' +
     '<div class="radar-card"><div class="radar-head"><div class="radar-title">' + ic('radar') + '九维罗盘</div>' +
       '<div class="radar-sub">越向外越有优势</div></div>' +
       radarSVG(dims) +
-      '<div class="radar-legend"><span><i style="background:#1F6F63"></i>你的各项得分</span><span><i style="background:#DCD5C4"></i>满分参考线</span></div>' +
+      '<div class="radar-legend"><span><i style="background:#BC6F5C"></i>你的各项得分</span><span><i style="background:#D9C7B1"></i>满分参考线</span></div>' +
     '</div>' +
     '<div class="dim-grid">' + dimH + '</div>' +
 
     '<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-txt"><span class="sec-no">02</span>你的专属双画像</div><div class="sec-div-line"></div></div>' +
     '<div class="dual-profiles">' +
-      mkCard(p.ideal, '理想型', { c:'#1F6F63', bg:'#DEEBE6' }, 'star', '条件最优时可争取') +
-      mkCard(p.base,  '底线型', { c:'#9B6B43', bg:'#F0E4D6' }, 'shield', '维持匹配的最低线') +
+      mkCard(p.ideal, '理想型', { c:'#BC6F5C', bg:'#F7E4DC' }, 'star', '条件最优时可争取') +
+      mkCard(p.base,  '底线型', { c:'#A87450', bg:'#F5E8D9' }, 'shield', '维持匹配的最低线') +
     '</div>' +
     matchBand(total) +
     '<div class="a-card"><h3>' + ic('pin') + '关于这份画像<span class="h3-no">NOTE</span></h3>' +
@@ -4219,11 +4318,11 @@ const SHARE_URL = 'https://GGYJWA.github.io/dating-positioning/';
 let __shareResult = null;
 
 const SK = {
-  paper:'#F4F1E9', paper2:'#EAE4D6', card:'#FFFDF8',
-  ink:'#1E3230', ink2:'#4C5E5A', ink3:'#83918C',
-  jade:'#1F6F63', deep:'#14504A', soft:'#DEEBE6',
-  gold:'#B08432', goldSoft:'#F4E9CD', seal:'#A8443C', sealSoft:'#F6E5E1',
-  line:'#DCD5C4', line2:'#C6BEA9',
+  paper:'#FBF5EC', paper2:'#F2E8DA', card:'#FFFDF8',
+  ink:'#3B322B', ink2:'#6E6055', ink3:'#9C8B7D',
+  clay:'#BC6F5C', deep:'#9A5443', soft:'#F7E4DC',
+  ochre:'#C08A3E', ochreSoft:'#F8EED9', seal:'#B4563F', sealSoft:'#F7E3DB',
+  line:'#EADCC9', line2:'#D9C7B1',
   F:'-apple-system,"PingFang SC","Microsoft YaHei",sans-serif',
   FS:'"Songti SC","STSong","Noto Serif SC",Georgia,serif'
 };
@@ -4297,12 +4396,12 @@ function skRadar(ctx, cx, cy, R, dims) {
     ctx.fillText(SK_DIM_CN[DIM_ORDER[i]], lp[0], lp[1]);
   }
   const shape = function (i) { return R * Math.max(0, Math.min(100, dims[DIM_ORDER[i]] || 0)) / 100; };
-  path(shape); ctx.fillStyle = 'rgba(31,111,99,.18)'; ctx.fill();
-  ctx.strokeStyle = SK.jade; ctx.lineWidth = 4; ctx.lineJoin = 'round'; ctx.stroke();
+  path(shape); ctx.fillStyle = 'rgba(188,111,92,.18)'; ctx.fill();
+  ctx.strokeStyle = SK.clay; ctx.lineWidth = 4; ctx.lineJoin = 'round'; ctx.stroke();
   for (let i = 0; i < N; i++) {
     const p = pt(i, shape(i));
     ctx.beginPath(); ctx.arc(p[0], p[1], 5.5, 0, Math.PI*2);
-    ctx.fillStyle = SK.card; ctx.fill(); ctx.strokeStyle = SK.jade; ctx.lineWidth = 3; ctx.stroke();
+    ctx.fillStyle = SK.card; ctx.fill(); ctx.strokeStyle = SK.clay; ctx.lineWidth = 3; ctx.stroke();
   }
   // ★ 轴标签用过 right/center 对齐，必须复位，否则后续标题会向左溢出被裁
   ctx.textAlign = 'left'; ctx.textBaseline = 'top';
@@ -4323,17 +4422,17 @@ function buildShareDataURL() {
 
   // 纸本背景
   const bg = ctx.createLinearGradient(0, 0, 0, tmp.height);
-  bg.addColorStop(0, '#EDEADF'); bg.addColorStop(0.35, SK.paper); bg.addColorStop(1, SK.card);
+  bg.addColorStop(0, '#FDF7EE'); bg.addColorStop(0.35, SK.paper); bg.addColorStop(1, SK.card);
   ctx.fillStyle = bg; ctx.fillRect(0, 0, W, tmp.height);
   // 顶部双线
-  ctx.strokeStyle = 'rgba(31,111,99,.35)'; ctx.lineWidth = 2;
+  ctx.strokeStyle = 'rgba(188,111,92,.35)'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(P, 34); ctx.lineTo(W-P, 34); ctx.stroke();
-  ctx.strokeStyle = 'rgba(31,111,99,.16)'; ctx.lineWidth = 1.5;
+  ctx.strokeStyle = 'rgba(188,111,92,.16)'; ctx.lineWidth = 1.5;
   ctx.beginPath(); ctx.moveTo(P, 41); ctx.lineTo(W-P, 41); ctx.stroke();
 
   let y = 66;
   ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-  ctx.fillStyle = SK.jade; ctx.font = '600 28px ' + SK.F;
+  ctx.fillStyle = SK.clay; ctx.font = '600 28px ' + SK.F;
   ctx.fillText('嘀嗒老师 · 相亲市场定位', P, y);
   // 朱砂印章
   ctx.strokeStyle = SK.seal; ctx.lineWidth = 3;
@@ -4375,7 +4474,7 @@ function buildShareDataURL() {
   skCard(ctx, P, y, cardW, radarH, 10);
   ctx.fillStyle = SK.ink; ctx.font = '700 32px ' + SK.FS;
   ctx.fillText('九维罗盘', P+40, y+26);
-  ctx.fillStyle = SK.gold; ctx.font = '22px ' + SK.F;
+  ctx.fillStyle = SK.ochre; ctx.font = '22px ' + SK.F;
   ctx.fillText('01 / DIMENSIONS', P+40, y+68);
   ctx.fillStyle = SK.ink3; ctx.font = '22px ' + SK.F; ctx.textAlign = 'right';
   ctx.fillText('越向外越有优势', P+cardW-40, y+32);
@@ -4388,12 +4487,12 @@ function buildShareDataURL() {
   skCard(ctx, P, y, cardW, listH, 10);
   ctx.fillStyle = SK.ink; ctx.font = '700 30px ' + SK.FS;
   ctx.fillText('九维得分明细', P+gridPad, y+20);
-  ctx.fillStyle = SK.gold; ctx.font = '20px ' + SK.F;
+  ctx.fillStyle = SK.ochre; ctx.font = '20px ' + SK.F;
   ctx.fillText('SCORE DETAIL', P+gridPad+220, y+30);
   const rowY0 = y + 66;
   DIM_ORDER.forEach(function (k, i) {
     const v = dims[k], ry = rowY0 + i*rowH;
-    const barColor = v >= 75 ? SK.jade : v >= 55 ? SK.gold : SK.seal;
+    const barColor = v >= 75 ? SK.clay : v >= 55 ? SK.ochre : SK.seal;
     ctx.fillStyle = SK.ink2; ctx.font = '24px ' + SK.F;
     ctx.fillText(SK_DIM_CN[k], P+gridPad, ry+8);
     const bx = P+gridPad+110, bw = cardW - 2*gridPad - 190;
@@ -4411,8 +4510,8 @@ function buildShareDataURL() {
   const rows = [['城市','city'],['学历','edu'],['收入','income'],['外貌','looks']];
   const rowStep = 64, colH = 96 + rows.length*rowStep + 16;
   const cols = [
-    { label:'理想型', sub:'条件最优时可争取', d:p.ideal, c:SK.jade, bg:SK.soft },
-    { label:'底线型', sub:'维持匹配的最低线', d:p.base,  c:'#9B6B43', bg:'#F0E4D6' }
+    { label:'理想型', sub:'条件最优时可争取', d:p.ideal, c:SK.clay, bg:SK.soft },
+    { label:'底线型', sub:'维持匹配的最低线', d:p.base,  c:'#A87450', bg:'#F5E8D9' }
   ];
   cols.forEach(function (col, ci) {
     const cx = P + ci*(colW+colGap);
@@ -4447,7 +4546,13 @@ function buildShareDataURL() {
     ctx.fillStyle = SK.ink; ctx.font = '700 27px ' + SK.FS;
     ctx.fillText(best.dim + ' · 诊断', P+50, y+24);
     ctx.fillStyle = SK.ink2; ctx.font = '25px ' + SK.F;
-    const txt = best.text.length > 44 ? best.text.slice(0,43)+'…' : best.text;
+    // ★ 按可用宽度动态截断（文案改写后长度不再固定，硬编码字数会溢出卡片）
+    const maxW = cardW - 50 - 30;
+    let txt = best.text;
+    if (ctx.measureText(txt).width > maxW) {
+      while (txt.length > 12 && ctx.measureText(txt + '…').width > maxW) txt = txt.slice(0, -1);
+      txt += '…';
+    }
     ctx.fillText(txt, P+50, y+62);
     y += noteH + 26;
   }
@@ -4470,7 +4575,7 @@ function buildShareDataURL() {
   ctx.fillStyle = SK.ink2; ctx.font = '26px ' + SK.F;
   ctx.fillText('看看你在这个市场里', tx, ty); ty += 38;
   ctx.fillText('究竟站在什么位置', tx, ty); ty += 58;
-  ctx.fillStyle = SK.jade; ctx.font = '700 28px ' + SK.FS;
+  ctx.fillStyle = SK.clay; ctx.font = '700 28px ' + SK.FS;
   ctx.fillText('嘀嗒老师 · 本地测算', tx, ty);
   const totalH = y + fH + 56;
 
