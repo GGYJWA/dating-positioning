@@ -928,6 +928,19 @@ input[type=range]::-moz-range-thumb {
   .ink-slot svg { height: 168px; }
 }
 
+/* 首屏插画位 */
+.ink-hero.has-ink { height: 178px; opacity: 1; margin: .1rem 0 1rem; }
+.ink-hero svg { height: 178px; max-width: 94%; }
+/* 报告页插画位 */
+.ink-report.has-ink { height: 214px; opacity: 1; margin: 1.1rem 0 .2rem; }
+.ink-report svg { height: 214px; max-width: 78%; }
+@media (max-width: 380px) {
+  .ink-hero.has-ink { height: 150px; }
+  .ink-hero svg { height: 150px; }
+  .ink-report.has-ink { height: 180px; }
+  .ink-report svg { height: 180px; }
+}
+
   </style>
 </head>
 <body>
@@ -936,7 +949,7 @@ input[type=range]::-moz-range-thumb {
   <!-- S0: INTRO -->
   <div class="screen active" id="s0">
     <div class="hero">
-      <div class="hero-emoji"></div><svg class="hero-line" viewBox="0 0 150 110" aria-hidden="true"><path d="M44,52 C40,44 39,35 43,27 C47,18 56,13 66,14 C76,15 84,21 87,30 C89,36 88,41 85,45 C83,48 86,50 89,51 C91,52 89,55 86,55 C88,58 89,62 87,65 C84,69 79,71 74,71 C71,74 69,78 69,82"/><path d="M38,106 C43,94 53,88 64,88 C76,88 85,93 89,106"/><circle cx="72" cy="31" r="1.9" fill="currentColor" stroke="none"/><path d="M80,26 C92,20 106,18 120,21" stroke-dasharray="1 4.5"/><path d="M82,38 C94,35 108,35 121,39" stroke-dasharray="1 4.5"/></svg><div class="hero-seal">嘀嗒<br>测算</div>
+      <div class="hero-emoji"></div><div class="ink-slot ink-hero" data-ink="hero"></div><div class="hero-seal">嘀嗒<br>测算</div>
       <h1>相亲市场定位测试</h1>
       <p>嘀嗒老师 · 本地测算版<br>9个维度，帮你看清真实的相亲市场定位</p>
       <div class="tag-row">
@@ -4375,6 +4388,7 @@ function render({ total, dims }) {
       '</div></div>' +
       '<div class="gauge-title">' + ic('balance') + ' 你在市场中的位置</div>' +
     '</div>' +
+    '<div class="ink-slot ink-report" data-ink="report"></div>' +
     tierRuler(t.title, total) +
 
     '<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-txt"><span class="sec-no">01</span>九维竞争力</div><div class="sec-div-line"></div></div>' +
@@ -4406,6 +4420,9 @@ function render({ total, dims }) {
       '<p>这份画像只是基于市场逻辑的参考框架，不是筛选清单。真实感情里，化学反应、共同成长、相互欣赏才是最重要的。找到一个让你觉得"对了"的人，远比找到一个条件对的人更珍贵。</p></div>' +
     '<button class="share-btn" onclick="generateShareImage()">' + ic('image') + '生成分享图 · 带二维码</button>' +
     '<button class="restart-btn" onclick="restart()">' + ic('refresh') + '重新测试</button>';
+
+  // 报告页插画位是动态生成的，需在渲染后再触发一次填充
+  if (window.__inkFill) setTimeout(window.__inkFill, 40);
 }
 
 
@@ -4757,28 +4774,42 @@ function generateShareImage() {
   }, 30);
 }
 
-// ══════════════════ 答题页 · 手绘线稿动图（line boil）══════════════════
-// 原理：AI 线稿矢量化后，每条路径各自独立微位移，约 3.3fps 循环切换三帧，
+// ══════════════════ 手绘线稿动图（line boil）══════════════════
+// 原理：AI 线稿矢量化后，每条路径各自独立微位移，高频循环切换三帧，
 //       线条产生"呼吸"感，像同一幅画被手绘了三遍。
 // 实现要点：
 //   1) 每条 <path> 保留 vtracer 自带的 transform（丢了会碎成一片）
 //   2) 动画用 JS 直接改 style.transform —— 不依赖 CSS/SVG 动画（浏览器会为省电暂停）
 //   3) SVG 按需 fetch 后内联，避免页面体积过大
+//   4) 帧率 140ms ≈ 7fps：更快切换视觉上更接近"手绘颤动"，而不是"一卡一卡地挪"
 (function () {
   var CACHE = {};
   var READY = false;
   var SHIFT = 5;      // 每条路径位移（px @760 画幅）→ 显示约 1.5px
-  var STEP = 300;     // 每帧 300ms ≈ 3.3fps
+  var STEP = 140;     // 每帧 140ms ≈ 7fps
 
-  // 确定性伪随机，保证每次刷新同一形态
+  // 场景 → 是否需要按性别区分
+  var GENDERED = { coffee: 1, cat: 1, plant: 1, report: 1, hero: 0 };
+  var SCENES = ['coffee', 'cat', 'plant', 'report', 'hero'];
+
   function rnd(seed) {
     var x = Math.sin(seed * 12.9898) * 43758.5453;
     return (x - Math.floor(x)) * 2 - 1;
   }
 
+  function cacheKey(scene, g) {
+    return GENDERED[scene] ? scene + '_' + g : scene;
+  }
+
+  function urlOf(scene, g) {
+    return 'ink/' + (GENDERED[scene] ? scene + '_' + g : scene) + '.svg';
+  }
+
   function startBoil(box) {
+    if (box.dataset.boiling) return;
     var gs = box.querySelectorAll('svg g[class^="ib"]');
     if (!gs.length) return;
+    box.dataset.boiling = '1';
     var n = gs.length;
     var frames = [[], [], []];
     for (var f = 0; f < 3; f++) {
@@ -4809,7 +4840,9 @@ function generateShareImage() {
     for (var k = 0; k < slots.length; k++) {
       var s = slots[k];
       if (s.dataset.done) continue;
-      var svg = CACHE[s.dataset.ink + '_' + g];
+      var scene = s.dataset.ink;
+      if (!scene) continue;
+      var svg = CACHE[cacheKey(scene, g)];
       if (!svg) continue;
       s.innerHTML = svg;
       s.dataset.done = '1';
@@ -4820,14 +4853,14 @@ function generateShareImage() {
 
   function ensure(cb) {
     var g = genderKey();
-    var keys = ['coffee', 'cat', 'plant'];
-    var left = keys.length;
+    var left = SCENES.length;
     function done() { left--; if (left === 0) cb(); }
-    keys.forEach(function (k) {
-      if (CACHE[k + '_' + g]) { done(); return; }
-      fetch('ink/' + k + '_' + g + '.svg')
+    SCENES.forEach(function (scene) {
+      var ck = cacheKey(scene, g);
+      if (CACHE[ck]) { done(); return; }
+      fetch(urlOf(scene, g))
         .then(function (r) { return r.ok ? r.text() : ''; })
-        .then(function (t) { if (t) CACHE[k + '_' + g] = t; done(); })
+        .then(function (t) { if (t) CACHE[ck] = t; done(); })
         .catch(function () { done(); });
     });
   }
@@ -4837,6 +4870,12 @@ function generateShareImage() {
     ensure(function () { READY = true; fill(); });
   };
 
+  // 首屏自动初始化
+  function boot() { setTimeout(function () { if (window.__inkFill) window.__inkFill(); }, 120); }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else { boot(); }
+
   // 每次切屏都尝试填充（首次会触发加载）
   var _show = window.show;
   window.show = function (id) {
@@ -4844,7 +4883,7 @@ function generateShareImage() {
     if (window.__inkFill) setTimeout(window.__inkFill, 80);
   };
 
-  // 性别改变 → 清空重载另一套
+  // 性别改变 → 清空重载另一套（hero 不分性别，也会重新填）
   var _setGender = window.setGender;
   window.setGender = function (g, el) {
     _setGender(g, el);
@@ -4853,6 +4892,7 @@ function generateShareImage() {
     for (var i = 0; i < slots.length; i++) {
       slots[i].innerHTML = '';
       slots[i].dataset.done = '';
+      slots[i].dataset.boiling = '';
       slots[i].classList.remove('has-ink');
     }
   };
